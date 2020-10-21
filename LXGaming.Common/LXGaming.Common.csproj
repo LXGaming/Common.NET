@@ -7,8 +7,8 @@
         <Title>Common</Title>
         <Authors>LXGaming</Authors>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/LXGaming/Common.NET</RepositoryUrl>
         <PackageProjectUrl>https://github.com/LXGaming/Common.NET</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/LXGaming/Common.NET</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
