@@ -8,10 +8,11 @@
         <Authors>LXGaming</Authors>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/LXGaming/Common.NET</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/LXGaming/Common.NET</PackageProjectUrl>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Nito.AsyncEx.Coordination" Version="5.1.0" />
+      <ProjectReference Include="..\LXGaming.Common.Collections\LXGaming.Common.Collections.csproj" />
     </ItemGroup>
 
 </Project>

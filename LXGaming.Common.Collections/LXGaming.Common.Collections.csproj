@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <PackageProjectUrl>https://github.com/LXGaming/Common.NET</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/LXGaming/Common.NET</RepositoryUrl>
+        <Title>Common Collections</Title>
+        <Authors>LXGaming</Authors>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Nito.AsyncEx.Coordination" Version="5.1.0" />
+    </ItemGroup>
+
+</Project>
