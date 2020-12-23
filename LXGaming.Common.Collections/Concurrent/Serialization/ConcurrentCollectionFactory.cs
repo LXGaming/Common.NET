@@ -17,12 +17,10 @@ namespace LXGaming.Common.Collections.Concurrent.Serialization {
 
         public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options) {
             var itemType = typeToConvert.GetGenericArguments()[0];
-            var converter = (JsonConverter) Activator.CreateInstance(
+            return (JsonConverter) Activator.CreateInstance(
                 typeof(CollectionConverter<,>).MakeGenericType(typeToConvert, itemType),
                 BindingFlags.Instance | BindingFlags.Public,
-                null, null, null)!;
-
-            return converter;
+                null, null, null);
         }
 
         private IEnumerable<Type> GetBaseTypes(Type type) {
