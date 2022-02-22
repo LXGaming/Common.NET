@@ -3,11 +3,14 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>1.1.1</Version>
+        <VersionPrefix>1.2.0</VersionPrefix>
+        <Authors>Alex Thomson</Authors>
+        <Product>Common</Product>
+        <Copyright>Copyright © Alex Thomson</Copyright>
         <Title>Common</Title>
-        <Authors>LXGaming</Authors>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/LXGaming/Common.NET</PackageProjectUrl>
+        <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/LXGaming/Common.NET</RepositoryUrl>
     </PropertyGroup>
 
