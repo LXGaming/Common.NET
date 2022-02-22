@@ -11,8 +11,4 @@
         <RepositoryUrl>https://github.com/LXGaming/Common.NET</RepositoryUrl>
     </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Nito.AsyncEx.Coordination" Version="5.1.2" />
-    </ItemGroup>
-
 </Project>

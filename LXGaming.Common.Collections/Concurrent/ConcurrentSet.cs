@@ -9,68 +9,101 @@ namespace LXGaming.Common.Collections.Concurrent {
         }
 
         public new bool Add(T item) {
-            using (Lock.WriterLock()) {
+            Lock.EnterWriteLock();
+            try {
                 return Collection.Add(item);
+            } finally {
+                Lock.ExitWriteLock();
             }
         }
 
         public void ExceptWith(IEnumerable<T> other) {
-            using (Lock.WriterLock()) {
+            Lock.EnterWriteLock();
+            try {
                 Collection.ExceptWith(other);
+            } finally {
+                Lock.ExitWriteLock();
             }
         }
 
         public void IntersectWith(IEnumerable<T> other) {
-            using (Lock.WriterLock()) {
+            Lock.EnterWriteLock();
+            try {
                 Collection.IntersectWith(other);
+            } finally {
+                Lock.ExitWriteLock();
             }
         }
 
         public bool IsProperSubsetOf(IEnumerable<T> other) {
-            using (Lock.ReaderLock()) {
+            Lock.EnterReadLock();
+            try {
                 return Collection.IsProperSubsetOf(other);
+            } finally {
+                Lock.ExitReadLock();
             }
         }
 
         public bool IsProperSupersetOf(IEnumerable<T> other) {
-            using (Lock.ReaderLock()) {
+            Lock.EnterReadLock();
+            try {
                 return Collection.IsProperSupersetOf(other);
+            } finally {
+                Lock.ExitReadLock();
             }
         }
 
         public bool IsSubsetOf(IEnumerable<T> other) {
-            using (Lock.ReaderLock()) {
+            Lock.EnterReadLock();
+            try {
                 return Collection.IsSubsetOf(other);
+            } finally {
+                Lock.ExitReadLock();
             }
         }
 
         public bool IsSupersetOf(IEnumerable<T> other) {
-            using (Lock.ReaderLock()) {
+            Lock.EnterReadLock();
+            try {
                 return Collection.IsSupersetOf(other);
+            } finally {
+                Lock.ExitReadLock();
             }
         }
 
         public bool Overlaps(IEnumerable<T> other) {
-            using (Lock.ReaderLock()) {
+            Lock.EnterReadLock();
+            try {
                 return Collection.Overlaps(other);
+            } finally {
+                Lock.ExitReadLock();
             }
         }
 
         public bool SetEquals(IEnumerable<T> other) {
-            using (Lock.ReaderLock()) {
+            Lock.EnterReadLock();
+            try {
                 return Collection.SetEquals(other);
+            } finally {
+                Lock.ExitReadLock();
             }
         }
 
         public void SymmetricExceptWith(IEnumerable<T> other) {
-            using (Lock.WriterLock()) {
+            Lock.EnterWriteLock();
+            try {
                 Collection.SymmetricExceptWith(other);
+            } finally {
+                Lock.ExitWriteLock();
             }
         }
 
         public void UnionWith(IEnumerable<T> other) {
-            using (Lock.WriterLock()) {
+            Lock.EnterWriteLock();
+            try {
                 Collection.UnionWith(other);
+            } finally {
+                Lock.ExitWriteLock();
             }
         }
     }

@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace LXGaming.Common.Collections.Concurrent {
 
     public class ConcurrentEnumerator<T> : IEnumerator<T> {
 
         private readonly IEnumerator<T> _enumerator;
-        private readonly IDisposable _lock;
+        private readonly ReaderWriterLockSlim _lock;
+        private bool _disposed;
 
-        public ConcurrentEnumerator(IEnumerable<T> enumerable, IDisposable @lock) {
+        public ConcurrentEnumerator(IEnumerable<T> enumerable, ReaderWriterLockSlim @lock) {
             _enumerator = enumerable.GetEnumerator();
             _lock = @lock;
+            _lock.EnterReadLock();
         }
 
         public bool MoveNext() => _enumerator.MoveNext();
@@ -21,8 +24,21 @@ namespace LXGaming.Common.Collections.Concurrent {
         object IEnumerator.Current => Current;
 
         public void Dispose() {
-            _enumerator.Dispose();
-            _lock.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing) {
+            if (_disposed) {
+                return;
+            }
+
+            if (disposing) {
+                _enumerator.Dispose();
+                _lock.ExitReadLock();
+            }
+
+            _disposed = true;
         }
 
         public T Current => _enumerator.Current;

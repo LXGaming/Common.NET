@@ -13,32 +13,47 @@ namespace LXGaming.Common.Collections.Concurrent {
         }
 
         public int IndexOf(T item) {
-            using (Lock.ReaderLock()) {
+            Lock.EnterReadLock();
+            try {
                 return Collection.IndexOf(item);
+            } finally {
+                Lock.ExitReadLock();
             }
         }
 
         public void Insert(int index, T item) {
-            using (Lock.WriterLock()) {
+            Lock.EnterWriteLock();
+            try {
                 Collection.Insert(index, item);
+            } finally {
+                Lock.ExitWriteLock();
             }
         }
 
         public void RemoveAt(int index) {
-            using (Lock.WriterLock()) {
+            Lock.EnterWriteLock();
+            try {
                 Collection.RemoveAt(index);
+            } finally {
+                Lock.ExitWriteLock();
             }
         }
 
         public T this[int index] {
             get {
-                using (Lock.ReaderLock()) {
+                Lock.EnterReadLock();
+                try {
                     return Collection[index];
+                } finally {
+                    Lock.ExitReadLock();
                 }
             }
             set {
-                using (Lock.WriterLock()) {
+                Lock.EnterWriteLock();
+                try {
                     Collection[index] = value;
+                } finally {
+                    Lock.ExitWriteLock();
                 }
             }
         }
