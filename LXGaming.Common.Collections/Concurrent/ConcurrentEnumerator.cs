@@ -21,7 +21,9 @@ namespace LXGaming.Common.Collections.Concurrent {
 
         public void Reset() => _enumerator.Reset();
 
+#nullable disable
         object IEnumerator.Current => Current;
+#nullable restore
 
         public void Dispose() {
             Dispose(true);
