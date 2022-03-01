@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LXGaming.Common", "LXGaming
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LXGaming.Common.Collections", "LXGaming.Common.Collections\LXGaming.Common.Collections.csproj", "{1930BDD2-725D-48CA-BAB5-185150A44541}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LXGaming.Common.Hosting", "LXGaming.Common.Hosting\LXGaming.Common.Hosting.csproj", "{4162A10B-6D6D-41B5-8A9C-33E6F3438791}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{1930BDD2-725D-48CA-BAB5-185150A44541}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1930BDD2-725D-48CA-BAB5-185150A44541}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1930BDD2-725D-48CA-BAB5-185150A44541}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4162A10B-6D6D-41B5-8A9C-33E6F3438791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4162A10B-6D6D-41B5-8A9C-33E6F3438791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4162A10B-6D6D-41B5-8A9C-33E6F3438791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4162A10B-6D6D-41B5-8A9C-33E6F3438791}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

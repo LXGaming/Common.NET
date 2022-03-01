@@ -6,9 +6,9 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <VersionPrefix>1.2.1</VersionPrefix>
         <Authors>Alex Thomson</Authors>
-        <Product>Common</Product>
+        <Product>Common Hosting</Product>
         <Copyright>Copyright © Alex Thomson</Copyright>
-        <Title>Common</Title>
+        <Title>Common Hosting</Title>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/LXGaming/Common.NET</PackageProjectUrl>
         <RepositoryType>git</RepositoryType>
@@ -16,8 +16,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LXGaming.Common.Collections\LXGaming.Common.Collections.csproj" />
-      <ProjectReference Include="..\LXGaming.Common.Hosting\LXGaming.Common.Hosting.csproj" />
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
     </ItemGroup>
 
 </Project>
