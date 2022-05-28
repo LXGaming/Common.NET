@@ -5,7 +5,6 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <VersionPrefix>1.2.1</VersionPrefix>
         <Authors>Alex Thomson</Authors>
         <Product>Common Collections</Product>
         <Copyright>Copyright © Alex Thomson</Copyright>
