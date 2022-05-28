@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace LXGaming.Common.Collections.Concurrent {
+﻿namespace LXGaming.Common.Collections.Concurrent {
 
     public class ConcurrentList<T> : ConcurrentCollection<IList<T>, T>, IList<T> {
 
