@@ -1,7 +1,7 @@
 ﻿using Serilog.Core;
 using Serilog.Events;
 
-namespace LXGaming.Common.Serilog; 
+namespace LXGaming.Common.Serilog;
 
 public class EnvironmentLoggingLevelSwitch : LoggingLevelSwitch {
 

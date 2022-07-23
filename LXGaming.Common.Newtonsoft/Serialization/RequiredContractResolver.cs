@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace LXGaming.Common.Newtonsoft.Serialization; 
+namespace LXGaming.Common.Newtonsoft.Serialization;
 
 public class RequiredContractResolver : DefaultContractResolver {
 
