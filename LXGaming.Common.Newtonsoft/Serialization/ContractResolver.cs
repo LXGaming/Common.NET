@@ -7,6 +7,11 @@ namespace LXGaming.Common.Newtonsoft.Serialization;
 public class ContractResolver : DefaultContractResolver {
 
     /// <summary>
+    /// Gets or sets a value indicating whether the Order property is automatically set.
+    /// </summary>
+    public bool OrderProperties { get; set; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether the Required property is automatically set.
     /// </summary>
     public bool RequiredProperties { get; set; }
@@ -15,6 +20,20 @@ public class ContractResolver : DefaultContractResolver {
 
     public ContractResolver() {
         _nullabilityInfoContext = new NullabilityInfoContext();
+    }
+
+    protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization) {
+        var properties = base.CreateProperties(type, memberSerialization);
+
+        if (OrderProperties) {
+            for (var index = 0; index < properties.Count; index++) {
+                properties[index].Order ??= index;
+            }
+
+            return properties.OrderBy(property => property.Order ?? -1).ToList();
+        }
+
+        return properties;
     }
 
     protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization) {
