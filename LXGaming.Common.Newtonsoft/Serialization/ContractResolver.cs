@@ -26,8 +26,13 @@ public class ContractResolver : DefaultContractResolver {
         var properties = base.CreateProperties(type, memberSerialization);
 
         if (OrderProperties) {
-            for (var index = 0; index < properties.Count; index++) {
-                properties[index].Order ??= index;
+            var index = 0;
+            foreach (var property in properties) {
+                while (properties.Any(jsonProperty => jsonProperty.Order == index)) {
+                    index++;
+                }
+
+                property.Order ??= index++;
             }
 
             return properties.OrderBy(property => property.Order ?? -1).ToList();
