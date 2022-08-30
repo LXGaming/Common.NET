@@ -19,6 +19,10 @@ namespace LXGaming.Common.Hosting {
         }
 
         public static IServiceCollection AddService(this IServiceCollection services, Type type) {
+            if (!type.IsDefined(typeof(ServiceAttribute))) {
+                return services;
+            }
+
             var serviceAttribute = type.GetCustomAttribute<ServiceAttribute>();
             if (typeof(IHostedService).IsAssignableFrom(type)) {
                 if (serviceAttribute == null) {
