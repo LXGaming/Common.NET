@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Alex Thomson</Authors>
+        <Product>Common Threading</Product>
+        <Copyright>Copyright © Alex Thomson</Copyright>
+        <Title>Common Threading</Title>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/LXGaming/Common.NET</PackageProjectUrl>
+        <PackageIconUrl>https://repo.lxgaming.me/assets/fluency/module.png</PackageIconUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/LXGaming/Common.NET</RepositoryUrl>
+    </PropertyGroup>
+
+</Project>
