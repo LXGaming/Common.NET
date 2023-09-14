@@ -36,7 +36,7 @@ public class CancellableTask : IAsyncDisposable {
     }
 
     public async ValueTask DisposeAsync() {
-        await DisposeAsync(true);
+        await DisposeAsync(true).ConfigureAwait(false);
         GC.SuppressFinalize(this);
     }
 
@@ -49,7 +49,7 @@ public class CancellableTask : IAsyncDisposable {
             try {
                 _cancellationTokenSource.Cancel();
                 if (_task != null) {
-                    await _task;
+                    await _task.ConfigureAwait(false);
                 }
             } catch (Exception) {
                 // no-op
