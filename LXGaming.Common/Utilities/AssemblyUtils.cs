@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 
-namespace LXGaming.Common;
+namespace LXGaming.Common.Utilities;
 
-public class Utilities {
+public static class AssemblyUtils {
 
     public static string GetAssemblyDescription(string assemblyString, string? packageName = null) {
         return GetAssemblyDescription(Assembly.Load(assemblyString), packageName ?? assemblyString);
@@ -20,9 +20,5 @@ public class Utilities {
         return (assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
                 ?? assembly.GetCustomAttribute<AssemblyVersionAttribute>()?.Version
                 ?? "null").Split('+', '-')[0];
-    }
-
-    public static bool IsRunningInContainer() {
-        return string.Equals(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"), "true", StringComparison.OrdinalIgnoreCase);
     }
 }
