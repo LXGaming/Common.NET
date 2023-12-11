@@ -8,7 +8,9 @@ namespace LXGaming.Common.Hosting {
 
         public static IServiceCollection AddAllServices(this IServiceCollection services, Assembly assembly) {
             foreach (var type in assembly.GetTypes()) {
-                services.AddService(type);
+                if (type is { IsAbstract: false, IsClass: true }) {
+                    services.AddService(type);
+                }
             }
 
             return services;
