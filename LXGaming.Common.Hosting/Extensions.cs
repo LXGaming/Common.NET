@@ -27,15 +27,11 @@ namespace LXGaming.Common.Hosting {
 
                 if (serviceAttribute.Lifetime == ServiceLifetime.Singleton) {
                     if (serviceAttribute.Type == null) {
-                        return services.AddHostedService(type, type);
-                    }
-
-                    if (typeof(IHostedService).IsAssignableFrom(serviceAttribute.Type)) {
-                        return services.AddHostedService(serviceAttribute.Type, type);
+                        return services.AddHostedService(type);
                     }
 
                     return services
-                        .AddHostedService(type, type)
+                        .AddHostedService(type)
                         .AddSingleton(serviceAttribute.Type, provider => provider.GetRequiredService(type));
                 }
 
@@ -49,10 +45,10 @@ namespace LXGaming.Common.Hosting {
             return services;
         }
 
-        private static IServiceCollection AddHostedService(this IServiceCollection services, Type serviceType, Type implementationType) {
+        private static IServiceCollection AddHostedService(this IServiceCollection services, Type type) {
             return services
-                .AddSingleton(serviceType, implementationType)
-                .AddSingleton(provider => (IHostedService) provider.GetRequiredService(serviceType));
+                .AddSingleton(type, type)
+                .AddSingleton(typeof(IHostedService), provider => provider.GetRequiredService(type));
         }
     }
 }
