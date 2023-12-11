@@ -3,11 +3,12 @@ using System.Text.Json.Serialization;
 
 namespace LXGaming.Common.Collections.Concurrent.Serialization;
 
-public class CollectionConverter<TCollection, TItem> : JsonConverter<TCollection> where TCollection : ICollection<TItem> {
+public class CollectionConverter<TCollection, TItem> : JsonConverter<TCollection>
+    where TCollection : ICollection<TItem> {
 
     public override TCollection Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
         if (reader.TokenType != JsonTokenType.StartArray) {
-            throw new JsonException($"Unexpected TokenType (got {nameof(reader.TokenType)}, expected {nameof(JsonTokenType.StartArray)})");
+            throw new JsonException($"Unexpected token {reader.TokenType} when parsing {typeToConvert.Name}.");
         }
 
         reader.Read();

@@ -2,7 +2,8 @@
 
 namespace LXGaming.Common.Newtonsoft.Converters;
 
-public class StringNumberConverter<T> : JsonConverter<T?> where T : struct, IComparable, IConvertible, ISpanFormattable, IComparable<T>, IEquatable<T> {
+public class StringNumberConverter<T> : JsonConverter<T?>
+    where T : struct, IComparable, IConvertible, ISpanFormattable, IComparable<T>, IEquatable<T> {
 
     public override void WriteJson(JsonWriter writer, T? value, JsonSerializer serializer) {
         writer.WriteValue(value.ToString());

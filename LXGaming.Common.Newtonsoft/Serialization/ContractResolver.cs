@@ -4,7 +4,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace LXGaming.Common.Newtonsoft.Serialization;
 
-public class ContractResolver : DefaultContractResolver {
+public class ContractResolver(NullabilityInfoContext? nullabilityInfoContext = null) : DefaultContractResolver {
 
     /// <summary>
     /// Gets or sets a value indicating whether the Order property is automatically set.
@@ -16,11 +16,7 @@ public class ContractResolver : DefaultContractResolver {
     /// </summary>
     public bool RequiredProperties { get; set; }
 
-    private readonly NullabilityInfoContext _nullabilityInfoContext;
-
-    public ContractResolver() {
-        _nullabilityInfoContext = new NullabilityInfoContext();
-    }
+    private readonly NullabilityInfoContext _nullabilityInfoContext = nullabilityInfoContext ?? new NullabilityInfoContext();
 
     protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization) {
         var properties = base.CreateProperties(type, memberSerialization);

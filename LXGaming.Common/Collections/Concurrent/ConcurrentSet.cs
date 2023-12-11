@@ -1,10 +1,6 @@
 ﻿namespace LXGaming.Common.Collections.Concurrent;
 
-public class ConcurrentSet<T> : ConcurrentCollection<ISet<T>, T>, ISet<T> {
-
-    public ConcurrentSet(ISet<T> set)
-        : base(set) {
-    }
+public class ConcurrentSet<T>(ISet<T> set) : ConcurrentCollection<ISet<T>, T>(set), ISet<T> {
 
     public new bool Add(T item) {
         Lock.EnterWriteLock();

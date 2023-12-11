@@ -2,16 +2,12 @@
 
 namespace LXGaming.Common.Collections.Concurrent;
 
-public class ConcurrentCollection<TCollection, TItem> : ICollection<TItem>, IDisposable where TCollection : ICollection<TItem> {
+public class ConcurrentCollection<TCollection, TItem>(TCollection collection) : ICollection<TItem>, IDisposable
+    where TCollection : ICollection<TItem> {
 
-    protected readonly TCollection Collection;
-    protected readonly ReaderWriterLockSlim Lock;
+    protected readonly TCollection Collection = collection;
+    protected readonly ReaderWriterLockSlim Lock = new();
     private bool _disposed;
-
-    public ConcurrentCollection(TCollection collection) {
-        Collection = collection;
-        Lock = new ReaderWriterLockSlim();
-    }
 
     IEnumerator IEnumerable.GetEnumerator() {
         return GetEnumerator();

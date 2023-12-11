@@ -5,18 +5,12 @@ public class CancellableTask : IAsyncDisposable {
     public CancellationToken CancellationToken => _cancellationTokenSource.Token;
     public bool Stopped { get; private set; }
 
-    private readonly CancellationTokenSource _cancellationTokenSource;
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
     private Task? _task;
     private bool _disposed;
 
-    public CancellableTask() {
-        _cancellationTokenSource = new CancellationTokenSource();
-    }
-
     public Task StartAsync(Func<Task> function) {
-        if (_disposed) {
-            throw new ObjectDisposedException(GetType().FullName);
-        }
+        ObjectDisposedException.ThrowIf(_disposed, this);
 
         if (_task != null) {
             throw new InvalidOperationException("Task already started");
@@ -26,9 +20,7 @@ public class CancellableTask : IAsyncDisposable {
     }
 
     public Task StopAsync() {
-        if (_disposed) {
-            throw new ObjectDisposedException(GetType().FullName);
-        }
+        ObjectDisposedException.ThrowIf(_disposed, this);
 
         Stopped = true;
         _cancellationTokenSource.Cancel();
