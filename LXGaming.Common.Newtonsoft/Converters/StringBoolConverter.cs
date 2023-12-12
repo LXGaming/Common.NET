@@ -7,7 +7,10 @@ namespace LXGaming.Common.Newtonsoft.Converters;
 public class StringBoolConverter(
     string falseKey,
     string trueKey,
-    StringComparison stringComparison = StringComparison.Ordinal) : JsonConverter<bool> {
+    StringComparison stringComparison) : JsonConverter<bool> {
+
+    public StringBoolConverter(string falseKey, string trueKey) : this(falseKey, trueKey, StringComparison.Ordinal) {
+    }
 
     public override void WriteJson(JsonWriter writer, bool value, JsonSerializer serializer) {
         writer.WriteValue(value ? trueKey : falseKey);
