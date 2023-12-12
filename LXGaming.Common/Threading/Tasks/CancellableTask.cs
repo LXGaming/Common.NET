@@ -19,12 +19,14 @@ public class CancellableTask : IAsyncDisposable {
         return _task = function();
     }
 
-    public Task StopAsync() {
+    public async Task StopAsync() {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
         Stopped = true;
-        _cancellationTokenSource.Cancel();
-        return _task ?? Task.CompletedTask;
+        await _cancellationTokenSource.CancelAsync().ConfigureAwait(false);
+        if (_task != null) {
+            await _task.ConfigureAwait(false);
+        }
     }
 
     public async ValueTask DisposeAsync() {
@@ -39,7 +41,7 @@ public class CancellableTask : IAsyncDisposable {
 
         if (disposing) {
             try {
-                _cancellationTokenSource.Cancel();
+                await _cancellationTokenSource.CancelAsync().ConfigureAwait(false);
                 if (_task != null) {
                     await _task.ConfigureAwait(false);
                 }
