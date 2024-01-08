@@ -51,7 +51,10 @@ public class ContractResolver(NullabilityInfoContext? nullabilityInfoContext = n
                 };
             }
 
-            property.Required = nullabilityInfo?.ReadState == NullabilityState.NotNull ? Required.Always : Required.Default;
+            var readState = nullabilityInfo?.ReadState;
+            if (readState is NullabilityState.NotNull or NullabilityState.Nullable) {
+                property.Required = readState == NullabilityState.NotNull ? Required.Always : Required.Default;
+            }
         }
 
         return property;
