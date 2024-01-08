@@ -6,12 +6,16 @@ public class StringNumberConverter<T> : JsonConverter<T?>
     where T : struct, IComparable, IConvertible, ISpanFormattable, IComparable<T>, IEquatable<T> {
 
     public override void WriteJson(JsonWriter writer, T? value, JsonSerializer serializer) {
-        writer.WriteValue(value.ToString());
+        if (value != null) {
+            writer.WriteValue(value.ToString());
+        } else {
+            writer.WriteNull();
+        }
     }
 
     public override T? ReadJson(JsonReader reader, Type objectType, T? existingValue, bool hasExistingValue, JsonSerializer serializer) {
         if (reader.TokenType == JsonToken.Null) {
-            return existingValue;
+            return null;
         }
 
         if (reader.TokenType == JsonToken.String) {
