@@ -6,7 +6,7 @@ using LXGaming.Common.Text.Json.NamingPolicies;
 
 namespace LXGaming.Common.Text.Json.Serialization.Converters;
 
-public sealed class StringEnumConverter<TEnum>() : JsonStringEnumConverter<TEnum>(CreateNamingPolicy())
+public class StringEnumConverter<TEnum>() : JsonStringEnumConverter<TEnum>(CreateNamingPolicy())
     where TEnum : struct, Enum {
 
     private static DictionaryNamingPolicy CreateNamingPolicy() {
