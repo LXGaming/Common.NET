@@ -4,21 +4,23 @@ namespace LXGaming.Common.Utilities;
 
 public static class AssemblyUtils {
 
-    public static string GetAssemblyDescription(string assemblyString, string? packageName = null) {
-        return GetAssemblyDescription(Assembly.Load(assemblyString), packageName ?? assemblyString);
+    public static string GetDescription(string assemblyString, string? name = null) {
+        return GetDescription(Assembly.Load(assemblyString), name);
     }
 
-    public static string GetAssemblyDescription(Assembly assembly, string? packageName = null) {
-        return $"{packageName ?? GetAssemblyName(assembly) ?? "null"} v{GetAssemblyVersion(assembly)}";
+    public static string GetDescription(Assembly assembly, string? name = null) {
+        return $"{name ?? GetName(assembly) ?? "null"} v{GetVersion(assembly) ?? "null"}";
     }
 
-    public static string? GetAssemblyName(Assembly assembly) {
+    public static string? GetName(Assembly assembly) {
         return assembly.GetName().Name;
     }
 
-    public static string GetAssemblyVersion(Assembly assembly) {
-        return (assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
-                ?? assembly.GetCustomAttribute<AssemblyVersionAttribute>()?.Version
-                ?? "null").Split('+', '-')[0];
+    public static string? GetVersion(Assembly assembly) {
+        return (
+            assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
+            ?? assembly.GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version
+            ?? assembly.GetName().Version?.ToString()
+        )?.Split('+', '-')[0];
     }
 }
