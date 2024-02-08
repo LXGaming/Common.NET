@@ -9,11 +9,19 @@ public static class AssemblyUtils {
     }
 
     public static string GetDescription(Assembly assembly, string? name = null) {
-        return $"{name ?? GetName(assembly) ?? "null"} v{GetVersion(assembly) ?? "null"}";
+        return $"{name ?? GetName(assembly, "Unknown")} v{GetVersion(assembly, "Unknown")}";
+    }
+
+    public static string GetName(Assembly assembly, string defaultValue) {
+        return GetName(assembly) ?? defaultValue;
     }
 
     public static string? GetName(Assembly assembly) {
         return assembly.GetName().Name;
+    }
+
+    public static string GetVersion(Assembly assembly, string defaultValue) {
+        return GetVersion(assembly) ?? defaultValue;
     }
 
     public static string? GetVersion(Assembly assembly) {
