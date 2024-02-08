@@ -31,11 +31,12 @@ public static class ReflectionUtils {
         return CreateFieldGetter<TReflectedType, TFieldType>(field);
     }
 
-    public static Func<TReflectedType, TFieldType> CreateFieldGetter<TReflectedType, TFieldType>(FieldInfo field) {
+    public static Func<TReflectedType, TFieldType> CreateFieldGetter<TReflectedType, TFieldType>(FieldInfo field, string? name = null) {
         var instanceParameter = Expression.Parameter(typeof(TReflectedType), "instance");
         return Expression.Lambda<Func<TReflectedType, TFieldType>>(
             Expression.Field(field.IsStatic ? null : instanceParameter, field),
-            instanceParameter
+            name,
+            [instanceParameter]
         ).Compile();
     }
     #endregion
@@ -51,7 +52,7 @@ public static class ReflectionUtils {
         return CreateFieldSetter<TReflectedType, TFieldType>(field);
     }
 
-    public static Action<TReflectedType, TFieldType> CreateFieldSetter<TReflectedType, TFieldType>(FieldInfo field) {
+    public static Action<TReflectedType, TFieldType> CreateFieldSetter<TReflectedType, TFieldType>(FieldInfo field, string? name = null) {
         var instanceParameter = Expression.Parameter(typeof(TReflectedType), "instance");
         var valueParameter = Expression.Parameter(typeof(TFieldType), "value");
         return Expression.Lambda<Action<TReflectedType, TFieldType>>(
@@ -59,7 +60,8 @@ public static class ReflectionUtils {
                 Expression.Field(field.IsStatic ? null : instanceParameter, field),
                 valueParameter
             ),
-            instanceParameter, valueParameter
+            name,
+            [instanceParameter, valueParameter]
         ).Compile();
     }
     #endregion
@@ -174,7 +176,7 @@ public static class ReflectionUtils {
         return CreatePropertyGetter<TReflectedType, TPropertyType>(property);
     }
 
-    public static Func<TReflectedType, TPropertyType> CreatePropertyGetter<TReflectedType, TPropertyType>(PropertyInfo property) {
+    public static Func<TReflectedType, TPropertyType> CreatePropertyGetter<TReflectedType, TPropertyType>(PropertyInfo property, string? name = null) {
         var getMethod = property.GetMethod;
         if (getMethod == null) {
             var field = GetRequiredField<TReflectedType>($"<{property.Name}>k__BackingField");
@@ -184,7 +186,8 @@ public static class ReflectionUtils {
         var instanceParameter = Expression.Parameter(typeof(TReflectedType), "instance");
         return Expression.Lambda<Func<TReflectedType, TPropertyType>>(
             Expression.Call(getMethod.IsStatic ? null : instanceParameter, getMethod),
-            instanceParameter
+            name,
+            [instanceParameter]
         ).Compile();
     }
     #endregion
@@ -200,7 +203,7 @@ public static class ReflectionUtils {
         return CreatePropertySetter<TReflectedType, TPropertyType>(property);
     }
 
-    public static Action<TReflectedType, TPropertyType> CreatePropertySetter<TReflectedType, TPropertyType>(PropertyInfo property) {
+    public static Action<TReflectedType, TPropertyType> CreatePropertySetter<TReflectedType, TPropertyType>(PropertyInfo property, string? name = null) {
         var setMethod = property.SetMethod;
         if (setMethod == null) {
             var field = GetRequiredField<TReflectedType>($"<{property.Name}>k__BackingField");
@@ -211,7 +214,8 @@ public static class ReflectionUtils {
         var valueParameter = Expression.Parameter(typeof(TPropertyType), "value");
         return Expression.Lambda<Action<TReflectedType, TPropertyType>>(
             Expression.Call(setMethod.IsStatic ? null : instanceParameter, setMethod, valueParameter),
-            instanceParameter, valueParameter
+            name,
+            [instanceParameter, valueParameter]
         ).Compile();
     }
     #endregion
