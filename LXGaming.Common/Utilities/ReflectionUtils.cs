@@ -109,6 +109,23 @@ public static class ReflectionUtils {
     }
     #endregion
 
+    #region Method Delegate
+    public static TDelegate CreateMethodDelegate<TReflectedType, TDelegate>(string name) where TDelegate : Delegate {
+        var method = GetRequiredMethod<TReflectedType>(name);
+        return method.CreateDelegate<TDelegate>();
+    }
+
+    public static TDelegate CreateMethodDelegate<TReflectedType, TDelegate>(string name, BindingFlags bindingAttr) where TDelegate : Delegate {
+        var method = GetRequiredMethod<TReflectedType>(name, bindingAttr);
+        return method.CreateDelegate<TDelegate>();
+    }
+
+    public static TDelegate CreateMethodDelegate<TReflectedType, TDelegate>(string name, BindingFlags bindingAttr, Type[] types) where TDelegate : Delegate {
+        var method = GetRequiredMethod<TReflectedType>(name, bindingAttr, types);
+        return method.CreateDelegate<TDelegate>();
+    }
+    #endregion
+
     #region Method
     public static MethodInfo? GetMethod<TReflectedType>(string name, bool? @static = null) {
         return GetMethod(typeof(TReflectedType), name, @static);
