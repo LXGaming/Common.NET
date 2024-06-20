@@ -28,7 +28,7 @@ public static class Extensions {
             }
 
             if (serviceAttribute.Lifetime == ServiceLifetime.Singleton) {
-                if (serviceAttribute.Type == null) {
+                if (serviceAttribute.Type == null || serviceAttribute.Type == typeof(IHostedService)) {
                     return services.AddHostedService(type);
                 }
 
