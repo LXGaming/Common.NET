@@ -8,20 +8,20 @@ public class CollectionConverter<TCollection, TItem> : JsonConverter<TCollection
 
     public override TCollection Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
         if (reader.TokenType != JsonTokenType.StartArray) {
-            throw new JsonException($"Unexpected token {reader.TokenType} when parsing {typeToConvert.Name}.");
+            throw new JsonException($"Unexpected token {reader.TokenType} when parsing '{typeToConvert.FullName}'.");
         }
 
         reader.Read();
 
         var items = Activator.CreateInstance<TCollection>();
         if (items == null) {
-            throw new JsonException($"Failed to create an instance of {nameof(TCollection)}");
+            throw new JsonException($"Failed to create an instance of '{typeof(TCollection).FullName}'.");
         }
 
         while (reader.TokenType != JsonTokenType.EndArray) {
             var item = JsonSerializer.Deserialize<TItem>(ref reader, options);
             if (item == null) {
-                throw new JsonException($"Failed to deserialize {nameof(TItem)}");
+                throw new JsonException($"Failed to deserialize '{typeof(TItem).FullName}'.");
             }
 
             items.Add(item);

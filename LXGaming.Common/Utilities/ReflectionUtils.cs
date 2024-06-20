@@ -89,7 +89,7 @@ public static class ReflectionUtils {
     public static FieldInfo GetRequiredField(Type type, string name, bool? @static = null) {
         var field = GetField(type, name, @static);
         if (field == null) {
-            throw new MissingFieldException(type.Name, name);
+            throw new MissingFieldException(type.FullName, name);
         }
 
         return field;
@@ -102,7 +102,7 @@ public static class ReflectionUtils {
     public static FieldInfo GetRequiredField(Type type, string name, BindingFlags bindingAttr) {
         var field = type.GetField(name, bindingAttr);
         if (field == null) {
-            throw new MissingFieldException(type.Name, name);
+            throw new MissingFieldException(type.FullName, name);
         }
 
         return field;
@@ -149,7 +149,7 @@ public static class ReflectionUtils {
     public static MethodInfo GetRequiredMethod(Type type, string name, bool? @static = null) {
         var method = GetMethod(type, name, @static);
         if (method == null) {
-            throw new MissingMethodException(type.Name, name);
+            throw new MissingMethodException(type.FullName, name);
         }
 
         return method;
@@ -162,7 +162,7 @@ public static class ReflectionUtils {
     public static MethodInfo GetRequiredMethod(Type type, string name, BindingFlags bindingAttr) {
         var method = type.GetMethod(name, bindingAttr);
         if (method == null) {
-            throw new MissingMethodException(type.Name, name);
+            throw new MissingMethodException(type.FullName, name);
         }
 
         return method;
@@ -175,7 +175,7 @@ public static class ReflectionUtils {
     public static MethodInfo GetRequiredMethod(Type type, string name, BindingFlags bindingAttr, Type[] types) {
         var method = type.GetMethod(name, bindingAttr, types);
         if (method == null) {
-            throw new MissingMethodException(type.Name, name);
+            throw new MissingMethodException(type.FullName, name);
         }
 
         return method;
@@ -260,7 +260,7 @@ public static class ReflectionUtils {
     public static PropertyInfo GetRequiredProperty(Type type, string name, bool? @static = null) {
         var property = GetProperty(type, name, @static);
         if (property == null) {
-            throw new MissingMemberException(type.Name, name);
+            throw new MissingMemberException(type.FullName, name);
         }
 
         return property;
@@ -273,7 +273,7 @@ public static class ReflectionUtils {
     public static PropertyInfo GetRequiredProperty(Type type, string name, BindingFlags bindingAttr) {
         var property = type.GetProperty(name, bindingAttr);
         if (property == null) {
-            throw new MissingMemberException(type.Name, name);
+            throw new MissingMemberException(type.FullName, name);
         }
 
         return property;

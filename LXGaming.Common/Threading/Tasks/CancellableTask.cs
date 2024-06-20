@@ -13,7 +13,7 @@ public class CancellableTask : IAsyncDisposable {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
         if (_task != null) {
-            throw new InvalidOperationException("Task already started");
+            throw new InvalidOperationException("Task already started.");
         }
 
         return _task = function();

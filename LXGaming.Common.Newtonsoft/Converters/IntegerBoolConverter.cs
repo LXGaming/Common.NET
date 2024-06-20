@@ -15,7 +15,7 @@ public class IntegerBoolConverter : JsonConverter<bool> {
                 return value == 1;
             }
 
-            throw new JsonSerializationException($"Integer value {value} is not allowed.");
+            throw new JsonSerializationException($"Integer value '{value}' is not allowed.");
         }
 
         throw new JsonSerializationException($"Unexpected token {reader.TokenType} when parsing {objectType.Name}.");

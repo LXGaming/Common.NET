@@ -24,7 +24,7 @@ public class StringBoolConverter(
                 return true;
             }
 
-            throw new JsonException($"String value {value} is not allowed.");
+            throw new JsonException($"String value '{value}' is not allowed.");
         }
 
         throw new JsonException($"Unexpected token {reader.TokenType} when parsing {typeToConvert.Name}.");

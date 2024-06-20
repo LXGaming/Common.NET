@@ -37,7 +37,7 @@ public static class Extensions {
                     .AddSingleton(serviceAttribute.Type, provider => provider.GetRequiredService(type));
             }
 
-            throw new InvalidOperationException($"{nameof(IHostedService)} cannot be {serviceAttribute.Lifetime}");
+            throw new InvalidOperationException($"{nameof(IHostedService)} cannot be {serviceAttribute.Lifetime}.");
         }
 
         if (serviceAttribute != null) {

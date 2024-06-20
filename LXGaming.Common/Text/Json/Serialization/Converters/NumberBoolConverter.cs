@@ -12,7 +12,7 @@ public class NumberBoolConverter : JsonConverter<bool> {
                 return value == 1;
             }
 
-            throw new JsonException($"Integer value {value} is not allowed.");
+            throw new JsonException($"Integer value '{value}' is not allowed.");
         }
 
         throw new JsonException($"Unexpected token {reader.TokenType} when parsing {typeToConvert.Name}.");
