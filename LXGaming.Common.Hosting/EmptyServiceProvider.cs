@@ -1,6 +1,6 @@
 ﻿namespace LXGaming.Common.Hosting;
 
-public class EmptyServiceProvider : IServiceProvider {
+public sealed class EmptyServiceProvider : IServiceProvider {
 
     public static EmptyServiceProvider Instance { get; } = new();
 
