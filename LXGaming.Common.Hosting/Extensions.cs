@@ -8,7 +8,7 @@ public static class Extensions {
 
     public static IServiceCollection AddAllServices(this IServiceCollection services, Assembly assembly) {
         foreach (var type in assembly.GetTypes()) {
-            if (IsValid(type)) {
+            if (IsValid(type) && IsService(type)) {
                 services.AddServiceInternal(type);
             }
         }
@@ -25,16 +25,20 @@ public static class Extensions {
             throw new ArgumentException($"Type '{type.FullName}' is not valid.", nameof(type));
         }
 
+        if (!IsService(type)) {
+            throw new ArgumentException($"Type '{type.FullName}' is not a service.", nameof(type));
+        }
+
         return services.AddServiceInternal(type);
     }
 
     private static IServiceCollection AddServiceInternal(this IServiceCollection services, Type type) {
-        var attribute = type.IsDefined(typeof(ServiceAttribute)) ? type.GetCustomAttribute<ServiceAttribute>() : null;
-        if (type.IsAssignableTo(typeof(IHostedService))) {
-            if (attribute == null) {
-                return services.AddSingleton(typeof(IHostedService), type);
-            }
+        var attribute = type.GetCustomAttribute<ServiceAttribute>();
+        if (attribute == null) {
+            throw new ArgumentException($"Type '{type.FullName}' is missing {nameof(ServiceAttribute)}.", nameof(type));
+        }
 
+        if (type.IsAssignableTo(typeof(IHostedService))) {
             if (attribute.Lifetime == ServiceLifetime.Singleton) {
                 if (attribute.Type == null || attribute.Type == typeof(IHostedService)) {
                     return services.AddHostedService(type);
@@ -48,10 +52,7 @@ public static class Extensions {
             throw new InvalidOperationException($"{nameof(IHostedService)} cannot be {attribute.Lifetime}.");
         }
 
-        if (attribute != null) {
-            services.Add(new ServiceDescriptor(attribute.Type ?? type, type, attribute.Lifetime));
-        }
-
+        services.Add(new ServiceDescriptor(attribute.Type ?? type, type, attribute.Lifetime));
         return services;
     }
 
@@ -59,6 +60,10 @@ public static class Extensions {
         return services
             .AddSingleton(type, type)
             .AddSingleton(typeof(IHostedService), provider => provider.GetRequiredService(type));
+    }
+
+    private static bool IsService(Type type) {
+        return type.IsDefined(typeof(ServiceAttribute));
     }
 
     private static bool IsValid(Type type) {
