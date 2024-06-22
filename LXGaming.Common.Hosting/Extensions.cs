@@ -8,8 +8,8 @@ public static class Extensions {
 
     public static IServiceCollection AddAllServices(this IServiceCollection services, Assembly assembly) {
         foreach (var type in assembly.GetTypes()) {
-            if (type is { IsAbstract: false, IsInterface: false }) {
-                services.AddService(type);
+            if (IsValid(type)) {
+                services.AddServiceInternal(type);
             }
         }
 
@@ -21,6 +21,14 @@ public static class Extensions {
     }
 
     public static IServiceCollection AddService(this IServiceCollection services, Type type) {
+        if (!IsValid(type)) {
+            throw new ArgumentException($"Type '{type.FullName}' is not valid.", nameof(type));
+        }
+
+        return services.AddServiceInternal(type);
+    }
+
+    private static IServiceCollection AddServiceInternal(this IServiceCollection services, Type type) {
         var serviceAttribute = type.IsDefined(typeof(ServiceAttribute)) ? type.GetCustomAttribute<ServiceAttribute>() : null;
         if (type.IsAssignableTo(typeof(IHostedService))) {
             if (serviceAttribute == null) {
@@ -51,5 +59,9 @@ public static class Extensions {
         return services
             .AddSingleton(type, type)
             .AddSingleton(typeof(IHostedService), provider => provider.GetRequiredService(type));
+    }
+
+    private static bool IsValid(Type type) {
+        return type is { IsAbstract: false, IsInterface: false };
     }
 }
