@@ -16,6 +16,16 @@ public static class Extensions {
         return services;
     }
 
+    public static IServiceCollection AddAllHostedServices(this IServiceCollection services, Assembly assembly) {
+        foreach (var type in assembly.GetTypes()) {
+            if (IsValid(type) && !IsService(type) && IsHostedService(type)) {
+                services.AddSingleton(typeof(IHostedService), type);
+            }
+        }
+
+        return services;
+    }
+
     public static IServiceCollection AddService<TService>(this IServiceCollection services) where TService : class {
         return services.AddService(typeof(TService));
     }
@@ -38,7 +48,7 @@ public static class Extensions {
             throw new ArgumentException($"Type '{type.FullName}' is missing {nameof(ServiceAttribute)}.", nameof(type));
         }
 
-        if (type.IsAssignableTo(typeof(IHostedService))) {
+        if (IsHostedService(type)) {
             if (attribute.Lifetime == ServiceLifetime.Singleton) {
                 if (attribute.Type == null || attribute.Type == typeof(IHostedService)) {
                     return services.AddHostedService(type);
@@ -60,6 +70,10 @@ public static class Extensions {
         return services
             .AddSingleton(type, type)
             .AddSingleton(typeof(IHostedService), provider => provider.GetRequiredService(type));
+    }
+
+    private static bool IsHostedService(Type type) {
+        return type.IsAssignableTo(typeof(IHostedService));
     }
 
     private static bool IsService(Type type) {
