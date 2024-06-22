@@ -8,7 +8,7 @@ public static class Extensions {
 
     public static IServiceCollection AddAllServices(this IServiceCollection services, Assembly assembly) {
         foreach (var type in assembly.GetTypes()) {
-            if (type is { IsAbstract: false, IsClass: true }) {
+            if (type is { IsAbstract: false, IsInterface: false }) {
                 services.AddService(type);
             }
         }
