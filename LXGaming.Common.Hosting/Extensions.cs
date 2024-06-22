@@ -43,7 +43,7 @@ public static class Extensions {
     }
 
     private static IServiceCollection AddServiceInternal(this IServiceCollection services, Type type) {
-        var attribute = type.GetCustomAttribute<ServiceAttribute>();
+        var attribute = type.GetCustomAttribute<ServiceAttribute>(false);
         if (attribute == null) {
             throw new ArgumentException($"Type '{type.FullName}' is missing {nameof(ServiceAttribute)}.", nameof(type));
         }
@@ -77,7 +77,7 @@ public static class Extensions {
     }
 
     private static bool IsService(Type type) {
-        return type.IsDefined(typeof(ServiceAttribute));
+        return type.IsDefined(typeof(ServiceAttribute), false);
     }
 
     private static bool IsValid(Type type) {

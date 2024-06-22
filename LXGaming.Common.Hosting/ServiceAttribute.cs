@@ -2,7 +2,7 @@
 
 namespace LXGaming.Common.Hosting;
 
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public class ServiceAttribute(ServiceLifetime lifetime, Type? type = null) : Attribute {
 
     public ServiceLifetime Lifetime { get; } = lifetime;
