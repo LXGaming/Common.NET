@@ -29,27 +29,27 @@ public static class Extensions {
     }
 
     private static IServiceCollection AddServiceInternal(this IServiceCollection services, Type type) {
-        var serviceAttribute = type.IsDefined(typeof(ServiceAttribute)) ? type.GetCustomAttribute<ServiceAttribute>() : null;
+        var attribute = type.IsDefined(typeof(ServiceAttribute)) ? type.GetCustomAttribute<ServiceAttribute>() : null;
         if (type.IsAssignableTo(typeof(IHostedService))) {
-            if (serviceAttribute == null) {
+            if (attribute == null) {
                 return services.AddSingleton(typeof(IHostedService), type);
             }
 
-            if (serviceAttribute.Lifetime == ServiceLifetime.Singleton) {
-                if (serviceAttribute.Type == null || serviceAttribute.Type == typeof(IHostedService)) {
+            if (attribute.Lifetime == ServiceLifetime.Singleton) {
+                if (attribute.Type == null || attribute.Type == typeof(IHostedService)) {
                     return services.AddHostedService(type);
                 }
 
                 return services
                     .AddHostedService(type)
-                    .AddSingleton(serviceAttribute.Type, provider => provider.GetRequiredService(type));
+                    .AddSingleton(attribute.Type, provider => provider.GetRequiredService(type));
             }
 
-            throw new InvalidOperationException($"{nameof(IHostedService)} cannot be {serviceAttribute.Lifetime}.");
+            throw new InvalidOperationException($"{nameof(IHostedService)} cannot be {attribute.Lifetime}.");
         }
 
-        if (serviceAttribute != null) {
-            services.Add(new ServiceDescriptor(serviceAttribute.Type ?? type, type, serviceAttribute.Lifetime));
+        if (attribute != null) {
+            services.Add(new ServiceDescriptor(attribute.Type ?? type, type, attribute.Lifetime));
         }
 
         return services;
