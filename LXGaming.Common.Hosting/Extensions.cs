@@ -22,7 +22,7 @@ public static class Extensions {
 
     public static IServiceCollection AddService(this IServiceCollection services, Type type) {
         var serviceAttribute = type.IsDefined(typeof(ServiceAttribute)) ? type.GetCustomAttribute<ServiceAttribute>() : null;
-        if (typeof(IHostedService).IsAssignableFrom(type)) {
+        if (type.IsAssignableTo(typeof(IHostedService))) {
             if (serviceAttribute == null) {
                 return services.AddSingleton(typeof(IHostedService), type);
             }
