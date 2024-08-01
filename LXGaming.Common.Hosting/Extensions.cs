@@ -7,7 +7,15 @@ namespace LXGaming.Common.Hosting;
 public static class Extensions {
 
     public static IServiceCollection AddAllServices(this IServiceCollection services, Assembly assembly) {
-        foreach (var type in assembly.GetTypes()) {
+        return services.AddAllServices(assembly.GetTypes());
+    }
+
+    public static IServiceCollection AddAllServicesOrdered(this IServiceCollection services, Assembly assembly) {
+        return services.AddAllServices(assembly.GetTypes().OrderBy(type => type.FullName));
+    }
+
+    public static IServiceCollection AddAllServices(this IServiceCollection services, IEnumerable<Type> types) {
+        foreach (var type in types) {
             if (IsValid(type) && IsService(type)) {
                 services.AddServiceInternal(type);
             }
@@ -17,7 +25,15 @@ public static class Extensions {
     }
 
     public static IServiceCollection AddAllHostedServices(this IServiceCollection services, Assembly assembly) {
-        foreach (var type in assembly.GetTypes()) {
+        return services.AddAllHostedServices(assembly.GetTypes());
+    }
+
+    public static IServiceCollection AddAllHostedServicesOrdered(this IServiceCollection services, Assembly assembly) {
+        return services.AddAllHostedServices(assembly.GetTypes().OrderBy(type => type.FullName));
+    }
+
+    public static IServiceCollection AddAllHostedServices(this IServiceCollection services, IEnumerable<Type> types) {
+        foreach (var type in types) {
             if (IsValid(type) && !IsService(type) && IsHostedService(type)) {
                 services.AddSingleton(typeof(IHostedService), type);
             }
