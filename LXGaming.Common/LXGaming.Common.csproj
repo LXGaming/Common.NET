@@ -11,6 +11,7 @@
     <Product>Common</Product>
     <Copyright>© Alex Thomson. All rights reserved.</Copyright>
     <Title>Common</Title>
+    <Description>Common Library for .NET</Description>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/LXGaming/Common.NET</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>

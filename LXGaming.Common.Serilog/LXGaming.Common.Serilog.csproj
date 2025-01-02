@@ -11,6 +11,7 @@
     <Product>Common Serilog</Product>
     <Copyright>© Alex Thomson. All rights reserved.</Copyright>
     <Title>Common Serilog</Title>
+    <Description>Common Library for Serilog</Description>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/LXGaming/Common.NET</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
