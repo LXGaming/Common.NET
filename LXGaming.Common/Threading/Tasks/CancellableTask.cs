@@ -1,68 +1,93 @@
 namespace LXGaming.Common.Threading.Tasks;
 
-public class CancellableTask(Func<CancellationToken, Task> func) : IAsyncDisposable {
+public class CancellableTask(Func<CancellableTaskContext, Task> func) : IAsyncDisposable {
 
-    public CancellationToken CancellationToken => _cancellationTokenSource.Token;
+    public CancellationToken CancelToken => _cancelSource.Token;
+    public CancellationToken StopToken => _stopSource.Token;
     public CancellableTaskStatus Status => _status;
 
-    private readonly CancellationTokenSource _cancellationTokenSource = new();
-    private readonly object _lock = new();
+    private readonly CancellationTokenSource _cancelSource = new();
+    private readonly CancellationTokenSource _stopSource = new();
+    private readonly SemaphoreSlim _lock = new(1, 1);
     private volatile CancellableTaskStatus _status = CancellableTaskStatus.Created;
     private volatile Task? _task;
     private bool _disposed;
 
-    public Task StartAsync() {
+    public async Task StartAsync() {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
         if (_task != null) {
-            return _task;
+            await _task.ConfigureAwait(false);
+            return;
         }
 
-        lock (_lock) {
-            if (_task != null) {
-                return _task;
+        await _lock.WaitAsync(CancellationToken.None).ConfigureAwait(false);
+        try {
+            if (_task == null) {
+                CancelToken.ThrowIfCancellationRequested();
+                _status = CancellableTaskStatus.Started;
+
+                try {
+                    _task = func(new CancellableTaskContext(CancelToken, StopToken));
+                } catch (Exception ex) {
+                    _task = Task.FromException(ex);
+                }
             }
-
-            CancellationToken.ThrowIfCancellationRequested();
-
-            Task task;
-            try {
-                task = func(CancellationToken);
-            } catch (Exception ex) {
-                task = Task.FromException(ex);
-            }
-
-            _task = task;
-            _status = CancellableTaskStatus.Started;
+        } finally {
+            _lock.Release();
         }
 
-        return _task;
+        await _task.ConfigureAwait(false);
     }
 
     public async Task StopAsync() {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
+        if (CancelToken.IsCancellationRequested) {
+            if (_task != null) {
+                await _task.ConfigureAwait(false);
+            }
+
+            return;
+        }
+
+        await _lock.WaitAsync(CancellationToken.None).ConfigureAwait(false);
         try {
-            await CancelAsync().ConfigureAwait(false);
+            if (!CancelToken.IsCancellationRequested) {
+                _status = CancellableTaskStatus.Stopped;
+                await _stopSource.CancelAsync().ConfigureAwait(false);
+                await _cancelSource.CancelAsync().ConfigureAwait(false);
+            }
         } finally {
-            _status = CancellableTaskStatus.Stopped;
+            _lock.Release();
+        }
+
+        if (_task != null) {
+            await _task.ConfigureAwait(false);
         }
     }
 
     private async Task CancelAsync() {
-        await _cancellationTokenSource.CancelAsync().ConfigureAwait(false);
-
-        Task? task;
-        if (_task != null) {
-            task = _task;
-        } else {
-            lock (_lock) {
-                task = _task;
+        if (CancelToken.IsCancellationRequested) {
+            if (_task != null) {
+                await _task.ConfigureAwait(false);
             }
+
+            return;
         }
 
-        if (task != null) {
-            await task.ConfigureAwait(false);
+        await _lock.WaitAsync(CancellationToken.None).ConfigureAwait(false);
+        try {
+            if (!CancelToken.IsCancellationRequested) {
+                _status = CancellableTaskStatus.Cancelled;
+                await _cancelSource.CancelAsync().ConfigureAwait(false);
+            }
+        } finally {
+            _lock.Release();
+        }
+
+        if (_task != null) {
+            await _task.ConfigureAwait(false);
         }
     }
 
@@ -84,7 +109,8 @@ public class CancellableTask(Func<CancellationToken, Task> func) : IAsyncDisposa
             }
 
             _task?.Dispose();
-            _cancellationTokenSource.Dispose();
+            _stopSource.Dispose();
+            _cancelSource.Dispose();
         }
 
         _disposed = true;
