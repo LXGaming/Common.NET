@@ -6,12 +6,14 @@ namespace LXGaming.Common.Collections.Concurrent.Serialization;
 
 public class ConcurrentCollectionFactory : JsonConverterFactory {
 
+    /// <inheritdoc />
     public override bool CanConvert(Type typeToConvert) {
         return typeToConvert.IsGenericType && GetBaseTypes(typeToConvert)
             .Where(type => type.IsGenericType)
             .Any(type => type.GetGenericTypeDefinition() == typeof(ConcurrentCollection<,>));
     }
 
+    /// <inheritdoc />
     public override JsonConverter? CreateConverter(Type typeToConvert, JsonSerializerOptions options) {
         var itemType = typeToConvert.GetGenericArguments()[0];
         return (JsonConverter?) Activator.CreateInstance(

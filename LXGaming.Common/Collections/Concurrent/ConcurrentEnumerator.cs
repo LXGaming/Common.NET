@@ -14,14 +14,21 @@ public class ConcurrentEnumerator<T> : IEnumerator<T> {
         _lock.EnterReadLock();
     }
 
+    /// <inheritdoc />
     public bool MoveNext() => _enumerator.MoveNext();
 
-    public void Reset() => _enumerator.Reset();
-
 #nullable disable
+    /// <inheritdoc />
     object IEnumerator.Current => Current;
 #nullable restore
 
+    /// <inheritdoc />
+    public void Reset() => _enumerator.Reset();
+
+    /// <inheritdoc />
+    public T Current => _enumerator.Current;
+
+    /// <inheritdoc />
     public void Dispose() {
         Dispose(true);
         GC.SuppressFinalize(this);
@@ -39,6 +46,4 @@ public class ConcurrentEnumerator<T> : IEnumerator<T> {
 
         _disposed = true;
     }
-
-    public T Current => _enumerator.Current;
 }

@@ -26,12 +26,14 @@ public static class ReflectionUtils {
         return CreateFieldGetter<TReflectedType, TFieldType>(field);
     }
 
-    public static Func<TReflectedType, TFieldType> CreateFieldGetter<TReflectedType, TFieldType>(string name, BindingFlags bindingAttr) {
+    public static Func<TReflectedType, TFieldType> CreateFieldGetter<TReflectedType, TFieldType>(string name,
+        BindingFlags bindingAttr) {
         var field = GetRequiredField<TReflectedType>(name, bindingAttr);
         return CreateFieldGetter<TReflectedType, TFieldType>(field);
     }
 
-    public static Func<TReflectedType, TFieldType> CreateFieldGetter<TReflectedType, TFieldType>(FieldInfo field, string? name = null) {
+    public static Func<TReflectedType, TFieldType> CreateFieldGetter<TReflectedType, TFieldType>(FieldInfo field,
+        string? name = null) {
         var instanceParameter = Expression.Parameter(typeof(TReflectedType), "instance");
         return Expression.Lambda<Func<TReflectedType, TFieldType>>(
             Expression.Field(field.IsStatic ? null : instanceParameter, field),
@@ -47,12 +49,14 @@ public static class ReflectionUtils {
         return CreateFieldSetter<TReflectedType, TFieldType>(field);
     }
 
-    public static Action<TReflectedType, TFieldType> CreateFieldSetter<TReflectedType, TFieldType>(string name, BindingFlags bindingAttr) {
+    public static Action<TReflectedType, TFieldType> CreateFieldSetter<TReflectedType, TFieldType>(string name,
+        BindingFlags bindingAttr) {
         var field = GetRequiredField<TReflectedType>(name, bindingAttr);
         return CreateFieldSetter<TReflectedType, TFieldType>(field);
     }
 
-    public static Action<TReflectedType, TFieldType> CreateFieldSetter<TReflectedType, TFieldType>(FieldInfo field, string? name = null) {
+    public static Action<TReflectedType, TFieldType> CreateFieldSetter<TReflectedType, TFieldType>(FieldInfo field,
+        string? name = null) {
         var instanceParameter = Expression.Parameter(typeof(TReflectedType), "instance");
         var valueParameter = Expression.Parameter(typeof(TFieldType), "value");
         return Expression.Lambda<Action<TReflectedType, TFieldType>>(
@@ -115,12 +119,14 @@ public static class ReflectionUtils {
         return method.CreateDelegate<TDelegate>();
     }
 
-    public static TDelegate CreateMethodDelegate<TReflectedType, TDelegate>(string name, BindingFlags bindingAttr) where TDelegate : Delegate {
+    public static TDelegate CreateMethodDelegate<TReflectedType, TDelegate>(string name, BindingFlags bindingAttr)
+        where TDelegate : Delegate {
         var method = GetRequiredMethod<TReflectedType>(name, bindingAttr);
         return method.CreateDelegate<TDelegate>();
     }
 
-    public static TDelegate CreateMethodDelegate<TReflectedType, TDelegate>(string name, BindingFlags bindingAttr, Type[] types) where TDelegate : Delegate {
+    public static TDelegate CreateMethodDelegate<TReflectedType, TDelegate>(string name, BindingFlags bindingAttr,
+        Type[] types) where TDelegate : Delegate {
         var method = GetRequiredMethod<TReflectedType>(name, bindingAttr, types);
         return method.CreateDelegate<TDelegate>();
     }
@@ -188,12 +194,14 @@ public static class ReflectionUtils {
         return CreatePropertyGetter<TReflectedType, TPropertyType>(property);
     }
 
-    public static Func<TReflectedType, TPropertyType> CreatePropertyGetter<TReflectedType, TPropertyType>(string name, BindingFlags bindingAttr) {
+    public static Func<TReflectedType, TPropertyType> CreatePropertyGetter<TReflectedType, TPropertyType>(string name,
+        BindingFlags bindingAttr) {
         var property = GetRequiredProperty<TReflectedType>(name, bindingAttr);
         return CreatePropertyGetter<TReflectedType, TPropertyType>(property);
     }
 
-    public static Func<TReflectedType, TPropertyType> CreatePropertyGetter<TReflectedType, TPropertyType>(PropertyInfo property, string? name = null) {
+    public static Func<TReflectedType, TPropertyType> CreatePropertyGetter<TReflectedType, TPropertyType>(
+        PropertyInfo property, string? name = null) {
         var getMethod = property.GetMethod;
         if (getMethod == null) {
             var field = GetRequiredField<TReflectedType>($"<{property.Name}>k__BackingField");
@@ -210,17 +218,20 @@ public static class ReflectionUtils {
     #endregion
 
     #region Property Setter
-    public static Action<TReflectedType, TPropertyType> CreatePropertySetter<TReflectedType, TPropertyType>(string name) {
+    public static Action<TReflectedType, TPropertyType> CreatePropertySetter<TReflectedType, TPropertyType>(
+        string name) {
         var property = GetRequiredProperty<TReflectedType>(name);
         return CreatePropertySetter<TReflectedType, TPropertyType>(property);
     }
 
-    public static Action<TReflectedType, TPropertyType> CreatePropertySetter<TReflectedType, TPropertyType>(string name, BindingFlags bindingAttr) {
+    public static Action<TReflectedType, TPropertyType> CreatePropertySetter<TReflectedType, TPropertyType>(string name,
+        BindingFlags bindingAttr) {
         var property = GetRequiredProperty<TReflectedType>(name, bindingAttr);
         return CreatePropertySetter<TReflectedType, TPropertyType>(property);
     }
 
-    public static Action<TReflectedType, TPropertyType> CreatePropertySetter<TReflectedType, TPropertyType>(PropertyInfo property, string? name = null) {
+    public static Action<TReflectedType, TPropertyType> CreatePropertySetter<TReflectedType, TPropertyType>(
+        PropertyInfo property, string? name = null) {
         var setMethod = property.SetMethod;
         if (setMethod == null) {
             var field = GetRequiredField<TReflectedType>($"<{property.Name}>k__BackingField");

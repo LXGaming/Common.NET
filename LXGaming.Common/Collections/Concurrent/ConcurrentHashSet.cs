@@ -2,19 +2,19 @@
 
 public class ConcurrentHashSet<T> : ConcurrentSet<T> {
 
-    public ConcurrentHashSet()
-        : base(new HashSet<T>()) {
+    public ConcurrentHashSet() : base(new HashSet<T>()) {
+        // no-op
     }
 
-    public ConcurrentHashSet(int capacity)
-        : base(new HashSet<T>(capacity)) {
+    public ConcurrentHashSet(int capacity) : base(new HashSet<T>(capacity)) {
+        // no-op
     }
 
-    public ConcurrentHashSet(IEqualityComparer<T> comparer)
-        : base(new HashSet<T>(comparer)) {
+    public ConcurrentHashSet(IEqualityComparer<T> comparer) : base(new HashSet<T>(comparer)) {
+        // no-op
     }
 
-    public ConcurrentHashSet(int capacity, IEqualityComparer<T> comparer)
-        : base(new HashSet<T>(capacity, comparer)) {
+    public ConcurrentHashSet(int capacity, IEqualityComparer<T> comparer) : base(new HashSet<T>(capacity, comparer)) {
+        // no-op
     }
 }

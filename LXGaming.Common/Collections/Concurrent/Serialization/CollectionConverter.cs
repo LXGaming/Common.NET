@@ -6,6 +6,7 @@ namespace LXGaming.Common.Collections.Concurrent.Serialization;
 public class CollectionConverter<TCollection, TItem> : JsonConverter<TCollection>
     where TCollection : ICollection<TItem> {
 
+    /// <inheritdoc />
     public override TCollection Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
         if (reader.TokenType != JsonTokenType.StartArray) {
             throw new JsonException($"Unexpected token {reader.TokenType} when parsing '{typeToConvert.FullName}'.");
@@ -31,6 +32,7 @@ public class CollectionConverter<TCollection, TItem> : JsonConverter<TCollection
         return items;
     }
 
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, TCollection value, JsonSerializerOptions options) {
         writer.WriteStartArray();
 

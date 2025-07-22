@@ -8,7 +8,8 @@ namespace LXGaming.Common.Text.Json.Serialization.Metadata.Modifiers;
 /// </summary>
 public class RequiredPropertiesModifier(NullabilityInfoContext? nullabilityInfoContext = null) : IModifier {
 
-    private readonly NullabilityInfoContext _nullabilityInfoContext = nullabilityInfoContext ?? new NullabilityInfoContext();
+    private readonly NullabilityInfoContext _nullabilityInfoContext =
+        nullabilityInfoContext ?? new NullabilityInfoContext();
 
     public void Execute(JsonTypeInfo jsonTypeInfo) {
         if (jsonTypeInfo.Kind != JsonTypeInfoKind.Object) {

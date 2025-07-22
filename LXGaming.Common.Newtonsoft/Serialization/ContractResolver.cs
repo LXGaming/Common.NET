@@ -16,8 +16,10 @@ public class ContractResolver(NullabilityInfoContext? nullabilityInfoContext = n
     /// </summary>
     public bool RequiredProperties { get; set; }
 
-    private readonly NullabilityInfoContext _nullabilityInfoContext = nullabilityInfoContext ?? new NullabilityInfoContext();
+    private readonly NullabilityInfoContext _nullabilityInfoContext =
+        nullabilityInfoContext ?? new NullabilityInfoContext();
 
+    /// <inheritdoc />
     protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization) {
         var properties = base.CreateProperties(type, memberSerialization);
 
@@ -37,6 +39,7 @@ public class ContractResolver(NullabilityInfoContext? nullabilityInfoContext = n
         return properties;
     }
 
+    /// <inheritdoc />
     protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization) {
         var property = base.CreateProperty(member, memberSerialization);
 

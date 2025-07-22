@@ -14,7 +14,8 @@ public static class Extensions {
         return resolver.WithModifier(new OrderPropertiesModifier());
     }
 
-    public static IJsonTypeInfoResolver WithRequiredPropertiesModifier(this IJsonTypeInfoResolver resolver, NullabilityInfoContext? nullabilityInfoContext = null) {
+    public static IJsonTypeInfoResolver WithRequiredPropertiesModifier(this IJsonTypeInfoResolver resolver,
+        NullabilityInfoContext? nullabilityInfoContext = null) {
         return resolver.WithModifier(new RequiredPropertiesModifier(nullabilityInfoContext));
     }
 }

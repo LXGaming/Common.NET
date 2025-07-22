@@ -4,19 +4,20 @@ using Newtonsoft.Json;
 namespace LXGaming.Common.Newtonsoft.Converters;
 
 [SuppressMessage("ReSharper", "IntroduceOptionalParameters.Global")]
-public class StringBoolConverter(
-    string falseKey,
-    string trueKey,
-    StringComparison stringComparison) : JsonConverter<bool> {
+public class StringBoolConverter(string falseKey, string trueKey, StringComparison stringComparison)
+    : JsonConverter<bool> {
 
     public StringBoolConverter(string falseKey, string trueKey) : this(falseKey, trueKey, StringComparison.Ordinal) {
     }
 
+    /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, bool value, JsonSerializer serializer) {
         writer.WriteValue(value ? trueKey : falseKey);
     }
 
-    public override bool ReadJson(JsonReader reader, Type objectType, bool existingValue, bool hasExistingValue, JsonSerializer serializer) {
+    /// <inheritdoc />
+    public override bool ReadJson(JsonReader reader, Type objectType, bool existingValue, bool hasExistingValue,
+        JsonSerializer serializer) {
         if (reader.TokenType == JsonToken.String) {
             var value = Convert.ToString(reader.Value);
             if (string.Equals(value, falseKey, stringComparison)) {

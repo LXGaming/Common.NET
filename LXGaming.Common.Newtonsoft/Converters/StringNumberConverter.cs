@@ -5,6 +5,7 @@ namespace LXGaming.Common.Newtonsoft.Converters;
 public class StringNumberConverter<T> : JsonConverter<T?>
     where T : struct, IComparable, IConvertible, ISpanFormattable, IComparable<T>, IEquatable<T> {
 
+    /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, T? value, JsonSerializer serializer) {
         if (value != null) {
             writer.WriteValue(value.ToString());
@@ -13,7 +14,9 @@ public class StringNumberConverter<T> : JsonConverter<T?>
         }
     }
 
-    public override T? ReadJson(JsonReader reader, Type objectType, T? existingValue, bool hasExistingValue, JsonSerializer serializer) {
+    /// <inheritdoc />
+    public override T? ReadJson(JsonReader reader, Type objectType, T? existingValue, bool hasExistingValue,
+        JsonSerializer serializer) {
         if (reader.TokenType == JsonToken.Null) {
             return null;
         }

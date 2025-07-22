@@ -91,6 +91,7 @@ public class CancellableTask(Func<CancellableTaskContext, Task> func) : IAsyncDi
         }
     }
 
+    /// <inheritdoc />
     public async ValueTask DisposeAsync() {
         await DisposeAsync(true).ConfigureAwait(false);
         GC.SuppressFinalize(this);

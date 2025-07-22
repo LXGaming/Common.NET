@@ -5,6 +5,7 @@ namespace LXGaming.Common.Text.Json.Serialization.Converters;
 
 public class NumberBoolConverter : JsonConverter<bool> {
 
+    /// <inheritdoc />
     public override bool Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
         if (reader.TokenType == JsonTokenType.Number) {
             var value = reader.GetInt32();
@@ -18,6 +19,7 @@ public class NumberBoolConverter : JsonConverter<bool> {
         throw new JsonException($"Unexpected token {reader.TokenType} when parsing {typeToConvert.Name}.");
     }
 
+    /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, bool value, JsonSerializerOptions options) {
         writer.WriteNumberValue(value ? 1 : 0);
     }
