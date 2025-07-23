@@ -25,13 +25,17 @@ public static class EnvironmentUtils {
     }
 
     public static bool IsRunningInContainer() {
-        return string.Equals(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"), "true", StringComparison.OrdinalIgnoreCase);
+        return string.Equals(GetRunningInContainer(), "true", StringComparison.OrdinalIgnoreCase);
     }
 
     public static string GetEnvironment() {
         return Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
                ?? Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")
                ?? Production;
+    }
+
+    public static string? GetRunningInContainer() {
+        return Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER");
     }
 
     public static DateTime GetStartTime() {
