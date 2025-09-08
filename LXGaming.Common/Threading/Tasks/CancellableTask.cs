@@ -110,6 +110,7 @@ public class CancellableTask(Func<CancellableTaskContext, Task> func) : IAsyncDi
             }
 
             _task?.Dispose();
+            _lock.Dispose();
             _stopSource.Dispose();
             _cancelSource.Dispose();
         }
