@@ -11,7 +11,7 @@ public class CancellableTask(Func<CancellableTaskContext, Task> func) : IAsyncDi
     private readonly SemaphoreSlim _lock = new(1, 1);
     private volatile CancellableTaskStatus _status = CancellableTaskStatus.Created;
     private volatile Task? _task;
-    private bool _disposed;
+    private volatile bool _disposed;
 
     public async Task StartAsync() {
         ObjectDisposedException.ThrowIf(_disposed, this);
