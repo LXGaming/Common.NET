@@ -93,10 +93,10 @@ public class ConcurrentCollection<TCollection, TItem>(TCollection collection)
             return;
         }
 
+        _disposed = true;
+
         if (disposing) {
             Lock.Dispose();
         }
-
-        _disposed = true;
     }
 }

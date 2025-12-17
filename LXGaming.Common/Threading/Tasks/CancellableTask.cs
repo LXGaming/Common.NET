@@ -93,28 +93,26 @@ public class CancellableTask(Func<CancellableTaskContext, Task> func) : IAsyncDi
 
     /// <inheritdoc />
     public async ValueTask DisposeAsync() {
-        await DisposeAsync(true).ConfigureAwait(false);
+        await DisposeAsyncCore().ConfigureAwait(false);
         GC.SuppressFinalize(this);
     }
 
-    protected virtual async ValueTask DisposeAsync(bool disposing) {
+    protected virtual async ValueTask DisposeAsyncCore() {
         if (_disposed) {
             return;
         }
 
-        if (disposing) {
-            try {
-                await CancelAsync().ConfigureAwait(false);
-            } catch (Exception) {
-                // no-op
-            }
+        _disposed = true;
 
-            _task?.Dispose();
-            _lock.Dispose();
-            _stopSource.Dispose();
-            _cancelSource.Dispose();
+        try {
+            await CancelAsync().ConfigureAwait(false);
+        } catch (Exception) {
+            // no-op
         }
 
-        _disposed = true;
+        _task?.Dispose();
+        _lock.Dispose();
+        _stopSource.Dispose();
+        _cancelSource.Dispose();
     }
 }

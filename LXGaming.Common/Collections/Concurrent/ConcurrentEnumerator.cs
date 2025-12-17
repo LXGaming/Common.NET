@@ -39,11 +39,11 @@ public class ConcurrentEnumerator<T> : IEnumerator<T> {
             return;
         }
 
+        _disposed = true;
+
         if (disposing) {
             _enumerator.Dispose();
             _lock.ExitReadLock();
         }
-
-        _disposed = true;
     }
 }
