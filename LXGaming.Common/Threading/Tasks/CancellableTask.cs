@@ -67,7 +67,12 @@ public class CancellableTask(Func<CancellableTaskContext, Task> func) : IAsyncDi
         }
     }
 
-    private async Task CancelAsync() {
+    public Task CancelAsync() {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+        return CancelInternalAsync();
+    }
+
+    private async Task CancelInternalAsync() {
         if (CancelToken.IsCancellationRequested) {
             if (_task != null) {
                 await _task.ConfigureAwait(false);
@@ -105,7 +110,7 @@ public class CancellableTask(Func<CancellableTaskContext, Task> func) : IAsyncDi
         _disposed = true;
 
         try {
-            await CancelAsync().ConfigureAwait(false);
+            await CancelInternalAsync().ConfigureAwait(false);
         } catch (Exception) {
             // no-op
         }
