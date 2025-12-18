@@ -11,6 +11,9 @@ public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposab
     public event AsyncEventHandler<UnhandledExceptionEventArgs<TKey>>? UnhandledException;
     public event AsyncEventHandler<UnregisteredEventArgs<TKey>>? Unregistered;
 
+    public int Count => _cancellableTasks.Count;
+    public ICollection<TKey> Keys => _cancellableTasks.Keys;
+
     private readonly ConcurrentDictionary<TKey, CancellableTask> _cancellableTasks = [];
     private volatile bool _disposed;
 
@@ -137,6 +140,10 @@ public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposab
     /// <inheritdoc />
     public IEnumerator<TKey> GetEnumerator() {
         return _cancellableTasks.Select(pair => pair.Key).GetEnumerator();
+    }
+
+    public bool Contains(TKey key) {
+        return _cancellableTasks.ContainsKey(key);
     }
 
     private async Task UnregisterInternalAsync(TKey key) {
