@@ -1,10 +1,11 @@
-﻿using System.Collections.Concurrent;
+﻿using System.Collections;
+using System.Collections.Concurrent;
 using LXGaming.Common.Event;
 using LXGaming.Common.Threading.Tasks.Models;
 
 namespace LXGaming.Common.Threading.Tasks;
 
-public class CancellableTaskCollection<TKey> : IAsyncDisposable where TKey : notnull {
+public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposable where TKey : notnull {
 
     public event AsyncEventHandler<RegisteredEventArgs<TKey>>? Registered;
     public event AsyncEventHandler<UnhandledExceptionEventArgs<TKey>>? UnhandledException;
@@ -126,6 +127,16 @@ public class CancellableTaskCollection<TKey> : IAsyncDisposable where TKey : not
         if (exceptions != null) {
             throw new AggregateException(exceptions);
         }
+    }
+
+    /// <inheritdoc />
+    IEnumerator IEnumerable.GetEnumerator() {
+        return GetEnumerator();
+    }
+
+    /// <inheritdoc />
+    public IEnumerator<TKey> GetEnumerator() {
+        return _cancellableTasks.Select(pair => pair.Key).GetEnumerator();
     }
 
     private async Task UnregisterInternalAsync(TKey key) {
