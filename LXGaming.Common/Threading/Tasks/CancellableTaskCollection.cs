@@ -40,23 +40,21 @@ public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposab
                 await UnregisterInternalAsync(key).ConfigureAwait(false);
             }
         });
-        bool registered;
         try {
-            registered = _cancellableTasks.TryAdd(key, cancellableTask);
+            if (!_cancellableTasks.TryAdd(key, cancellableTask)) {
+                await cancellableTask.DisposeAsync().ConfigureAwait(false);
+                return false;
+            }
         } catch (Exception) {
-            registered = false;
-        }
-
-        if (!registered) {
             await cancellableTask.DisposeAsync().ConfigureAwait(false);
-            return false;
+            throw;
         }
 
         // If dispose was called while the CancellableTask was being added we need to remove and dispose of it.
         if (_disposed) {
             _cancellableTasks.TryRemove(key, out _);
             await cancellableTask.DisposeAsync().ConfigureAwait(false);
-            return false;
+            throw new ObjectDisposedException(GetType().FullName);
         }
 
         try {
@@ -73,7 +71,7 @@ public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposab
         } catch (Exception) {
             await UnregisterInternalAsync(key).ConfigureAwait(false);
             await cancellableTask.DisposeAsync().ConfigureAwait(false);
-            return false;
+            throw;
         }
 
         _ = task.ContinueWith(async _ => {
