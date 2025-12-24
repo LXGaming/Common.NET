@@ -11,7 +11,13 @@ public class ConcurrentEnumerator<T> : IEnumerator<T> {
     public ConcurrentEnumerator(IEnumerable<T> enumerable, ReaderWriterLockSlim @lock) {
         _enumerator = enumerable.GetEnumerator();
         _lock = @lock;
-        _lock.EnterReadLock();
+
+        try {
+            _lock.EnterReadLock();
+        } catch (Exception) {
+            _enumerator.Dispose();
+            throw;
+        }
     }
 
     /// <inheritdoc />
