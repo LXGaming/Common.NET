@@ -24,4 +24,18 @@ public static class Extensions {
             .Select(handler => handler(sender, eventArgs));
         return Task.WhenAll(tasks);
     }
+
+#if NET10_0_OR_GREATER
+    public static Task InvokeAsync<TSender, TEventArgs>(this AsyncEventHandler<TSender, TEventArgs>? eventHandler,
+        TSender sender, TEventArgs eventArgs) {
+        if (eventHandler == null) {
+            return Task.CompletedTask;
+        }
+
+        var tasks = eventHandler.GetInvocationList()
+            .Cast<AsyncEventHandler<TSender, TEventArgs>>()
+            .Select(handler => handler(sender, eventArgs));
+        return Task.WhenAll(tasks);
+    }
+#endif
 }
