@@ -1,4 +1,4 @@
-﻿namespace LXGaming.Common.Threading.Tasks;
+namespace LXGaming.Common.Threading.Tasks;
 
 public readonly struct CancellableTaskContext(CancellationToken cancelToken, CancellationToken stopToken) {
 

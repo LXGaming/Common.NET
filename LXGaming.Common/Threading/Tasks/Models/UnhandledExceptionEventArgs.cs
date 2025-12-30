@@ -1,4 +1,4 @@
-﻿namespace LXGaming.Common.Threading.Tasks.Models;
+namespace LXGaming.Common.Threading.Tasks.Models;
 
 public class UnhandledExceptionEventArgs<TKey> : EventArgs {
 

@@ -1,4 +1,4 @@
-﻿namespace LXGaming.Common.Utilities;
+namespace LXGaming.Common.Utilities;
 
 public static class CollectionUtils {
 

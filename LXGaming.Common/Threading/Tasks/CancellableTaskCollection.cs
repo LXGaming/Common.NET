@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Concurrent;
 using LXGaming.Common.Event;
 using LXGaming.Common.Threading.Tasks.Models;

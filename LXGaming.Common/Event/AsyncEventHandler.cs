@@ -1,4 +1,4 @@
-﻿namespace LXGaming.Common.Event;
+namespace LXGaming.Common.Event;
 
 public delegate Task AsyncEventHandler(object? sender, EventArgs eventArgs);
 

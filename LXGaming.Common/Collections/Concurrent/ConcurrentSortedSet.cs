@@ -1,4 +1,4 @@
-﻿namespace LXGaming.Common.Collections.Concurrent;
+namespace LXGaming.Common.Collections.Concurrent;
 
 public class ConcurrentSortedSet<T> : ConcurrentSet<T> {
 

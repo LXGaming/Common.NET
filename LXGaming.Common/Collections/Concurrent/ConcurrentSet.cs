@@ -1,4 +1,4 @@
-﻿namespace LXGaming.Common.Collections.Concurrent;
+namespace LXGaming.Common.Collections.Concurrent;
 
 public class ConcurrentSet<T>(ISet<T> set) : ConcurrentCollection<ISet<T>, T>(set), ISet<T> {
 

@@ -1,4 +1,4 @@
-﻿namespace LXGaming.Common.Threading.Tasks;
+namespace LXGaming.Common.Threading.Tasks;
 
 public enum CancellableTaskStatus {
 

@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using LXGaming.Common.Models;
 
 namespace LXGaming.Common.Utilities;
