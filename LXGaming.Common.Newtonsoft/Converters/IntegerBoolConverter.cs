@@ -2,11 +2,15 @@ using Newtonsoft.Json;
 
 namespace LXGaming.Common.Newtonsoft.Converters;
 
-public class IntegerBoolConverter : JsonConverter<bool> {
+public class IntegerBoolConverter(int falseNumber, int trueNumber) : JsonConverter<bool> {
+
+    public IntegerBoolConverter() : this(0, 1) {
+        // no-op
+    }
 
     /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, bool value, JsonSerializer serializer) {
-        writer.WriteValue(value ? 1 : 0);
+        writer.WriteValue(value ? trueNumber : falseNumber);
     }
 
     /// <inheritdoc />
@@ -14,8 +18,12 @@ public class IntegerBoolConverter : JsonConverter<bool> {
         JsonSerializer serializer) {
         if (reader.TokenType == JsonToken.Integer) {
             var value = Convert.ToInt32(reader.Value);
-            if (value is 0 or 1) {
-                return value == 1;
+            if (value == falseNumber) {
+                return false;
+            }
+
+            if (value == trueNumber) {
+                return true;
             }
 
             throw new JsonSerializationException($"Integer value '{value}' is not allowed.");

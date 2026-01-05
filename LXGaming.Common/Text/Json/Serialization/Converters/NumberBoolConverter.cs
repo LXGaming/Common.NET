@@ -3,14 +3,22 @@ using System.Text.Json.Serialization;
 
 namespace LXGaming.Common.Text.Json.Serialization.Converters;
 
-public class NumberBoolConverter : JsonConverter<bool> {
+public class NumberBoolConverter(int falseNumber, int trueNumber) : JsonConverter<bool> {
+
+    public NumberBoolConverter() : this(0, 1) {
+        // no-op
+    }
 
     /// <inheritdoc />
     public override bool Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
         if (reader.TokenType == JsonTokenType.Number) {
             var value = reader.GetInt32();
-            if (value is 0 or 1) {
-                return value == 1;
+            if (value == falseNumber) {
+                return false;
+            }
+
+            if (value == trueNumber) {
+                return true;
             }
 
             throw new JsonException($"Integer value '{value}' is not allowed.");
@@ -21,6 +29,6 @@ public class NumberBoolConverter : JsonConverter<bool> {
 
     /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, bool value, JsonSerializerOptions options) {
-        writer.WriteNumberValue(value ? 1 : 0);
+        writer.WriteNumberValue(value ? trueNumber : falseNumber);
     }
 }
