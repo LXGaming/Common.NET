@@ -6,11 +6,12 @@ namespace LXGaming.Common.Text.Json.Serialization.Converters;
 
 [SuppressMessage("ReSharper", "IntroduceOptionalParameters.Global")]
 public class StringBoolConverter(
-    string falseKey,
-    string trueKey,
-    StringComparison stringComparison) : JsonConverter<bool> {
+    string falseString,
+    string trueString,
+    StringComparison comparisonType) : JsonConverter<bool> {
 
-    public StringBoolConverter(string falseKey, string trueKey) : this(falseKey, trueKey, StringComparison.Ordinal) {
+    public StringBoolConverter(string falseString, string trueString) : this(falseString, trueString,
+        StringComparison.Ordinal) {
         // no-op
     }
 
@@ -18,11 +19,11 @@ public class StringBoolConverter(
     public override bool Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
         if (reader.TokenType == JsonTokenType.String) {
             var value = reader.GetString();
-            if (string.Equals(value, falseKey, stringComparison)) {
+            if (string.Equals(value, falseString, comparisonType)) {
                 return false;
             }
 
-            if (string.Equals(value, trueKey, stringComparison)) {
+            if (string.Equals(value, trueString, comparisonType)) {
                 return true;
             }
 
@@ -34,6 +35,6 @@ public class StringBoolConverter(
 
     /// <inheritdoc />
     public override void Write(Utf8JsonWriter writer, bool value, JsonSerializerOptions options) {
-        writer.WriteStringValue(value ? trueKey : falseKey);
+        writer.WriteStringValue(value ? trueString : falseString);
     }
 }

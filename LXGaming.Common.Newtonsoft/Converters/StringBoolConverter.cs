@@ -5,17 +5,18 @@ namespace LXGaming.Common.Newtonsoft.Converters;
 
 [SuppressMessage("ReSharper", "IntroduceOptionalParameters.Global")]
 public class StringBoolConverter(
-    string falseKey,
-    string trueKey,
-    StringComparison stringComparison) : JsonConverter<bool> {
+    string falseString,
+    string trueString,
+    StringComparison comparisonType) : JsonConverter<bool> {
 
-    public StringBoolConverter(string falseKey, string trueKey) : this(falseKey, trueKey, StringComparison.Ordinal) {
+    public StringBoolConverter(string falseString, string trueString) : this(falseString, trueString,
+        StringComparison.Ordinal) {
         // no-op
     }
 
     /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, bool value, JsonSerializer serializer) {
-        writer.WriteValue(value ? trueKey : falseKey);
+        writer.WriteValue(value ? trueString : falseString);
     }
 
     /// <inheritdoc />
@@ -23,11 +24,11 @@ public class StringBoolConverter(
         JsonSerializer serializer) {
         if (reader.TokenType == JsonToken.String) {
             var value = Convert.ToString(reader.Value);
-            if (string.Equals(value, falseKey, stringComparison)) {
+            if (string.Equals(value, falseString, comparisonType)) {
                 return false;
             }
 
-            if (string.Equals(value, trueKey, stringComparison)) {
+            if (string.Equals(value, trueString, comparisonType)) {
                 return true;
             }
 

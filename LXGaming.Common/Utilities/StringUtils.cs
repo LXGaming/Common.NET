@@ -8,14 +8,14 @@ namespace LXGaming.Common.Utilities;
 public static class StringUtils {
 
     public static int CountMatches(string @string, string searchString,
-        StringComparison stringComparison = StringComparison.Ordinal) {
+        StringComparison comparisonType = StringComparison.Ordinal) {
         if (string.IsNullOrEmpty(@string) || string.IsNullOrEmpty(searchString)) {
             return 0;
         }
 
         var count = 0;
         var index = 0;
-        while ((index = @string.IndexOf(searchString, index, stringComparison)) != -1) {
+        while ((index = @string.IndexOf(searchString, index, comparisonType)) != -1) {
             count++;
             index += searchString.Length;
         }
