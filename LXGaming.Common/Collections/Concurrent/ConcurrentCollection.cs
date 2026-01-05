@@ -2,8 +2,8 @@ using System.Collections;
 
 namespace LXGaming.Common.Collections.Concurrent;
 
-public class ConcurrentCollection<TCollection, TItem>(TCollection collection)
-    : ICollection<TItem>, IDisposable where TCollection : ICollection<TItem> {
+public class ConcurrentCollection<TCollection, TItem>(TCollection collection) : ICollection<TItem>, IDisposable
+    where TCollection : ICollection<TItem> {
 
     protected readonly TCollection Collection = collection;
     protected readonly ReaderWriterLockSlim Lock = new();

@@ -5,7 +5,8 @@ using LXGaming.Common.Threading.Tasks.Models;
 
 namespace LXGaming.Common.Threading.Tasks;
 
-public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposable where TKey : notnull {
+public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposable
+    where TKey : notnull {
 
     public event AsyncEventHandler<RegisteredEventArgs<TKey>>? Registered;
     public event AsyncEventHandler<UnhandledExceptionEventArgs<TKey>>? UnhandledException;

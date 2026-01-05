@@ -4,10 +4,13 @@ using Newtonsoft.Json;
 namespace LXGaming.Common.Newtonsoft.Converters;
 
 [SuppressMessage("ReSharper", "IntroduceOptionalParameters.Global")]
-public class StringBoolConverter(string falseKey, string trueKey, StringComparison stringComparison)
-    : JsonConverter<bool> {
+public class StringBoolConverter(
+    string falseKey,
+    string trueKey,
+    StringComparison stringComparison) : JsonConverter<bool> {
 
     public StringBoolConverter(string falseKey, string trueKey) : this(falseKey, trueKey, StringComparison.Ordinal) {
+        // no-op
     }
 
     /// <inheritdoc />
