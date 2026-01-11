@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace LXGaming.Common.Utilities;
 
 public static class CollectionUtils {
@@ -16,6 +18,24 @@ public static class CollectionUtils {
 
     public static bool TryAddIgnoreNull<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key, TValue? value) {
         return value != null && dictionary.TryAdd(key, value);
+    }
+
+    public static void AddOrDecrement<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key, TValue value)
+        where TValue : INumber<TValue> {
+        if (dictionary.TryGetValue(key, out var existingValue)) {
+            dictionary[key] = existingValue - value;
+        } else {
+            dictionary[key] = value;
+        }
+    }
+
+    public static void AddOrIncrement<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key, TValue value)
+        where TValue : INumber<TValue> {
+        if (dictionary.TryGetValue(key, out var existingValue)) {
+            dictionary[key] = existingValue + value;
+        } else {
+            dictionary[key] = value;
+        }
     }
 
     public static void AddRange<T>(ICollection<T> collection, IEnumerable<T> items) {
