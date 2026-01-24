@@ -43,4 +43,13 @@ public static class CollectionUtils {
             collection.Add(item);
         }
     }
+
+    public static bool Set<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key, TValue? value) {
+        if (value == null) {
+            return dictionary.Remove(key);
+        }
+
+        dictionary[key] = value;
+        return true;
+    }
 }
