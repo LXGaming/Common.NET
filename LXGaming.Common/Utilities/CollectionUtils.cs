@@ -4,10 +4,26 @@ namespace LXGaming.Common.Utilities;
 
 public static class CollectionUtils {
 
+    public static void AddIgnoreNullOrEmpty(ICollection<string> collection, string? value) {
+        if (!string.IsNullOrEmpty(value)) {
+            collection.Add(value);
+        }
+    }
+
     public static void AddIgnoreNull<T>(ICollection<T> collection, T? value) {
         if (value != null) {
             collection.Add(value);
         }
+    }
+
+    public static void AddIgnoreNullOrEmpty<TKey>(IDictionary<TKey, string> dictionary, TKey key, string? value) {
+        if (!string.IsNullOrEmpty(value)) {
+            dictionary.Add(key, value);
+        }
+    }
+
+    public static bool TryAddIgnoreNullOrEmpty<TKey>(IDictionary<TKey, string> dictionary, TKey key, string? value) {
+        return !string.IsNullOrEmpty(value) && dictionary.TryAdd(key, value);
     }
 
     public static void AddIgnoreNull<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key, TValue? value) {
