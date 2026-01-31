@@ -1,16 +1,26 @@
+using System.Globalization;
+using System.Numerics;
 using Newtonsoft.Json;
 
 namespace LXGaming.Common.Newtonsoft.Converters;
 
-public class StringNumberConverter<T> : JsonConverter<T?>
-    where T : struct, IComparable, IConvertible, ISpanFormattable, IComparable<T>, IEquatable<T> {
+public class StringNumberConverter<T>(NumberStyles? style, IFormatProvider? provider) : JsonConverter<T?>
+    where T : struct, INumber<T> {
+
+    public StringNumberConverter(NumberStyles style) : this(style, null) {
+        // no-op
+    }
+
+    public StringNumberConverter() : this(null, null) {
+        // no-op
+    }
 
     /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, T? value, JsonSerializer serializer) {
-        if (value != null) {
-            writer.WriteValue(value.ToString());
-        } else {
+        if (value == null) {
             writer.WriteNull();
+        } else {
+            writer.WriteValue(value.ToString());
         }
     }
 
@@ -22,9 +32,14 @@ public class StringNumberConverter<T> : JsonConverter<T?>
         }
 
         if (reader.TokenType == JsonToken.String) {
-            return (T?) Convert.ChangeType(reader.Value, typeof(T));
+            var value = (string) reader.Value!;
+            if (style.HasValue) {
+                return T.Parse(value, style.Value, provider);
+            }
+
+            return T.Parse(value, provider);
         }
 
-        throw new JsonSerializationException($"Unexpected token {reader.TokenType} when parsing {typeof(T).Name}.");
+        throw new JsonSerializationException($"Unexpected token {reader.TokenType} when parsing {objectType.Name}.");
     }
 }
