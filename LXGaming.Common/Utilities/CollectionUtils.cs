@@ -38,6 +38,10 @@ public static class CollectionUtils {
         }
     }
 
+    public static void AddRange<T>(ICollection<T> collection, params T[] items) {
+        AddRange(collection, (IEnumerable<T>) items);
+    }
+
     public static void AddRange<T>(ICollection<T> collection, IEnumerable<T> items) {
         foreach (var item in items) {
             collection.Add(item);
