@@ -8,9 +8,9 @@ namespace LXGaming.Common.Threading.Tasks;
 public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposable
     where TKey : notnull {
 
-    public event AsyncEventHandler<RegisteredEventArgs<TKey>>? Registered;
+    public event AsyncEventHandler<AddedEventArgs<TKey>>? Added;
+    public event AsyncEventHandler<RemovedEventArgs<TKey>>? Removed;
     public event AsyncEventHandler<UnhandledExceptionEventArgs<TKey>>? UnhandledException;
-    public event AsyncEventHandler<UnregisteredEventArgs<TKey>>? Unregistered;
 
     public int Count => _cancellableTasks.Count;
     public ICollection<TKey> Keys => _cancellableTasks.Keys;
@@ -18,7 +18,7 @@ public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposab
     private readonly ConcurrentDictionary<TKey, CancellableTask> _cancellableTasks = [];
     private volatile bool _disposed;
 
-    public async Task<bool> RegisterAsync(TKey key, Func<CancellableTaskContext, Task> func) {
+    public async Task<bool> AddAsync(TKey key, Func<CancellableTaskContext, Task> func) {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
         if (_cancellableTasks.ContainsKey(key)) {
@@ -38,7 +38,7 @@ public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposab
                     // no-op
                 }
             } finally {
-                await UnregisterInternalAsync(key).ConfigureAwait(false);
+                await RemoveInternalAsync(key).ConfigureAwait(false);
             }
         });
         try {
@@ -59,7 +59,7 @@ public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposab
         }
 
         try {
-            await Registered.InvokeAsync(this, new RegisteredEventArgs<TKey> {
+            await Added.InvokeAsync(this, new AddedEventArgs<TKey> {
                 Key = key
             }).ConfigureAwait(false);
         } catch (Exception) {
@@ -70,19 +70,19 @@ public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposab
         try {
             task = cancellableTask.StartAsync();
         } catch (Exception) {
-            await UnregisterInternalAsync(key).ConfigureAwait(false);
+            await RemoveInternalAsync(key).ConfigureAwait(false);
             await cancellableTask.DisposeAsync().ConfigureAwait(false);
             throw;
         }
 
         _ = task.ContinueWith(async _ => {
-            await UnregisterInternalAsync(key).ConfigureAwait(false);
+            await RemoveInternalAsync(key).ConfigureAwait(false);
             await cancellableTask.DisposeAsync().ConfigureAwait(false);
         }, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.Default);
         return true;
     }
 
-    public async Task<bool> UnregisterAsync(TKey key, bool stop = true) {
+    public async Task<bool> RemoveAsync(TKey key, bool stop = true) {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
         if (!_cancellableTasks.TryGetValue(key, out var cancellableTask)) {
@@ -100,12 +100,12 @@ public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposab
         return true;
     }
 
-    public Task UnregisterAllAsync(bool stop = true) {
+    public Task RemoveAllAsync(bool stop = true) {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        return UnregisterAllAsync(_ => true, stop);
+        return RemoveAllAsync(_ => true, stop);
     }
 
-    public async Task UnregisterAllAsync(Predicate<TKey> match, bool stop = true) {
+    public async Task RemoveAllAsync(Predicate<TKey> match, bool stop = true) {
         ObjectDisposedException.ThrowIf(_disposed, this);
 
         List<Exception>? exceptions = null;
@@ -145,13 +145,13 @@ public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposab
         return _cancellableTasks.ContainsKey(key);
     }
 
-    private async Task UnregisterInternalAsync(TKey key) {
+    private async Task RemoveInternalAsync(TKey key) {
         if (!_cancellableTasks.TryRemove(key, out _)) {
             return;
         }
 
         try {
-            await Unregistered.InvokeAsync(this, new UnregisteredEventArgs<TKey> {
+            await Removed.InvokeAsync(this, new RemovedEventArgs<TKey> {
                 Key = key
             }).ConfigureAwait(false);
         } catch (Exception) {
