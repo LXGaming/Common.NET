@@ -15,7 +15,6 @@ public class CancellableTask(Func<CancellableTaskContext, Task> func) : IAsyncDi
 
     public async Task StartAsync() {
         ObjectDisposedException.ThrowIf(_disposed, this);
-
         if (_task != null) {
             await _task.ConfigureAwait(false);
             return;
@@ -42,7 +41,6 @@ public class CancellableTask(Func<CancellableTaskContext, Task> func) : IAsyncDi
 
     public async Task StopAsync() {
         ObjectDisposedException.ThrowIf(_disposed, this);
-
         if (CancelToken.IsCancellationRequested) {
             if (_task != null) {
                 await _task.ConfigureAwait(false);

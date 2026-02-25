@@ -20,7 +20,6 @@ public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposab
 
     public async Task<bool> AddAsync(TKey key, Func<CancellableTaskContext, Task> func) {
         ObjectDisposedException.ThrowIf(_disposed, this);
-
         if (_cancellableTasks.ContainsKey(key)) {
             return false;
         }
@@ -84,7 +83,6 @@ public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposab
 
     public async Task<bool> RemoveAsync(TKey key, bool stop = true) {
         ObjectDisposedException.ThrowIf(_disposed, this);
-
         if (!_cancellableTasks.TryGetValue(key, out var cancellableTask)) {
             return false;
         }
@@ -107,7 +105,6 @@ public class CancellableTaskCollection<TKey> : IEnumerable<TKey>, IAsyncDisposab
 
     public async Task RemoveAllAsync(Predicate<TKey> match, bool stop = true) {
         ObjectDisposedException.ThrowIf(_disposed, this);
-
         List<Exception>? exceptions = null;
         foreach (var pair in _cancellableTasks) {
             if (!match(pair.Key)) {
