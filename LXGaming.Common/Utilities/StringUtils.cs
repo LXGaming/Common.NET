@@ -46,8 +46,8 @@ public static class StringUtils {
         return input.StartsWith('v') ? Version.Parse(input[1..]) : Version.Parse(input);
     }
 
-    public static string ToHex(byte[] bytes) {
-        var stringBuilder = new StringBuilder(bytes.Length * 2);
+    public static string ToHex(ICollection<byte> bytes) {
+        var stringBuilder = new StringBuilder(bytes.Count * 2);
         foreach (var @byte in bytes) {
             stringBuilder.Append(@byte.ToString("x2"));
         }
