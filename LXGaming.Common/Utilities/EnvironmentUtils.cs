@@ -46,4 +46,11 @@ public static class EnvironmentUtils {
         using var process = Process.GetCurrentProcess();
         return process.StartTime;
     }
+
+    [UnsupportedOSPlatform("ios")]
+    [UnsupportedOSPlatform("tvos")]
+    [SupportedOSPlatform("maccatalyst")]
+    public static TimeSpan GetUptime() {
+        return DateTime.UtcNow - GetStartTime().ToUniversalTime();
+    }
 }
