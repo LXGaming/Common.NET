@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.Versioning;
 
 namespace LXGaming.Common.Utilities;
 
@@ -38,6 +39,9 @@ public static class EnvironmentUtils {
         return Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER");
     }
 
+    [UnsupportedOSPlatform("ios")]
+    [UnsupportedOSPlatform("tvos")]
+    [SupportedOSPlatform("maccatalyst")]
     public static DateTime GetStartTime() {
         using var process = Process.GetCurrentProcess();
         return process.StartTime;
