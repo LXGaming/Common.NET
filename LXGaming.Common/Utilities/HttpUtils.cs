@@ -1,10 +1,31 @@
 using System.Collections.Specialized;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Encodings.Web;
 
 namespace LXGaming.Common.Utilities;
 
 public static class HttpUtils {
+
+    public static void AddIgnoreNullOrEmpty(HttpHeaders headers, string name, string? value) {
+        if (!string.IsNullOrEmpty(value)) {
+            headers.Add(name, value);
+        }
+    }
+
+    public static bool TryAddIgnoreNullOrEmpty(HttpHeaders headers, string name, string? value) {
+        return !string.IsNullOrEmpty(value) && headers.TryAddWithoutValidation(name, value);
+    }
+
+    public static void AddIgnoreNull(HttpHeaders headers, string name, string? value) {
+        if (value != null) {
+            headers.Add(name, value);
+        }
+    }
+
+    public static bool TryAddIgnoreNull(HttpHeaders headers, string name, string? value) {
+        return value != null && headers.TryAddWithoutValidation(name, value);
+    }
 
     public static string CreateQueryString(string key, string value) {
         var stringBuilder = new StringBuilder();
