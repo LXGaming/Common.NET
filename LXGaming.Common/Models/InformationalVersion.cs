@@ -1,4 +1,5 @@
 using System.Text;
+using LXGaming.Common.Utilities;
 
 namespace LXGaming.Common.Models;
 
@@ -52,6 +53,29 @@ public record InformationalVersion {
             PreRelease = value.Substring(minusIndex + 1, plusIndex - minusIndex - 1),
             BuildMetadata = value[(plusIndex + 1)..]
         };
+    }
+
+    public string? GetSourceRevisionId() {
+        if (BuildMetadata == null) {
+            return null;
+        }
+
+        if (StringUtils.IsGitRevisionId(BuildMetadata)) {
+            return BuildMetadata;
+        }
+
+        // https://github.com/dotnet/sdk/blob/v8.0.100/src/Tasks/Microsoft.NET.Build.Tasks/targets/Microsoft.NET.GenerateAssemblyInfo.targets#L71
+        var dotIndex = BuildMetadata.LastIndexOf('.');
+        if (dotIndex == -1) {
+            return null;
+        }
+
+        var value = BuildMetadata[(dotIndex + 1)..];
+        if (StringUtils.IsGitRevisionId(value)) {
+            return value;
+        }
+
+        return null;
     }
 
     /// <inheritdoc />

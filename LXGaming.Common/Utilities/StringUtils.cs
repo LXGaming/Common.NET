@@ -36,6 +36,11 @@ public static class StringUtils {
         return attribute?.Value ?? name;
     }
 
+    public static bool IsGitRevisionId(string value) {
+        // SHA-1 or SHA-256
+        return value.Length is 40 or 64 && value.All(char.IsAsciiHexDigit);
+    }
+
     public static string Join(char separator, params object?[] values) {
         return string.Join(separator, values
             .Select(value => value?.ToString())
