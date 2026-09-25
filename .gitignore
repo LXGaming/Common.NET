@@ -429,6 +429,9 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
+# Official VS Code C# Dev Kit Extension exclusion
+#*.lscache
+
 # https://github.com/github/gitignore/blob/main/Global/Linux.gitignore
 *~
 
