@@ -12,7 +12,7 @@ public record InformationalVersion {
 
     public static InformationalVersion Parse(string value) {
         var minusIndex = value.IndexOf('-');
-        var plusIndex = value.LastIndexOf('+');
+        var plusIndex = value.IndexOf('+');
 
         // Version
         if (minusIndex == -1 && plusIndex == -1) {
